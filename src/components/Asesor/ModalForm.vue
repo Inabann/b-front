@@ -1,5 +1,4 @@
 <template>
-    
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title">Formulario Nuevo Asesor</p>
@@ -38,23 +37,17 @@
                         >
                     </b-input>
                 </b-field>
-
-                <!-- <b-checkbox>Remember me</b-checkbox> -->
             </section>
             <footer class="modal-card-foot">
                 <button class="button" type="button" @click="$parent.close()">Close</button>
-                <button class="button is-primary" @click="SaveAsesor">Guardar</button>
+                <button class="button is-primary" @click="SaveAsesor()">Guardar</button>
             </footer>
         </div>
    
 </template>
 <script>
 export default {
- // props: ['email', 'password'],
-     props: ['asesores'],
-
-  // name: 'ModalForm',
-
+     props: ['asesoress'],
   data () {
     return {
     	asesor:{
@@ -69,13 +62,11 @@ export default {
   methods: {
     SaveAsesor(){
        this.$http.post('/api/Asesors', this.asesor).then(res => {
-            // this.clientes.unshift(res.body)
-             this.$emit('newList', this.asesor);
-            // console.log(res);}
-            this.$parent.close()
-            // this.$toast.open({message:'Cliente guardado',type: 'is-success'})
+       this.$emit('newList', this.asesoress);
+       this.$parent.close()
+
           })
-    },
+    }
   }
 };
 </script>

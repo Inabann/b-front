@@ -1,11 +1,11 @@
 <template>
     <div class="column is-half is-offset-one-quarter">
       <h1 class="title">Lista de Asesores</h1>
-	<div class="column">
+
 	      <button class="button is-info is-medium" @click="isComponentModalActive=true"><span>Nuevo Asesor</span></button>
-	    </div>
+	
 	     <b-modal :active.sync="isComponentModalActive" has-modal-card>
-            <modal-form :asesores="asesores" @newList="asesor = $event"></modal-form>
+            <modal-form :asesores="asesores" @newList="asesoress = $event"></modal-form>
         </b-modal>
     <section>
              <b-table
@@ -15,16 +15,19 @@
            >
 
             <template scope="props">
-                <b-table-column label="DNI" width="40" numeric>
+                <b-table-column label="DNI" width="100" numeric>
                     {{ props.row.dni }}
                 </b-table-column>
 
-                <b-table-column label="First Nombre">
+                <b-table-column label="Nombre">
                     {{ props.row.nombre }}
                 </b-table-column>
 
                 <b-table-column label="Teléfono">
                     {{ props.row.telf }}
+                </b-table-column>
+                <b-table-column label="Opciones" >
+                <a class="button is-danger is-small" @click="remove(props.row)" >Eliminar</a>
                 </b-table-column>
 
             </template>
@@ -70,13 +73,20 @@ import ModalForm from '@/components/Asesor/ModalForm'
            this.$http.get('/api/Asesors').then((res) => {
             // this.clientes = res.body;
             this.asesores=res.data;
-            console.log(this.asesores)
+    
           });
-        }
+        },
+
+    remove(asesor){
+       this.$http.delete('/api/Asesors/'+asesor.id).then((res) => {
+                let vm = this
+                vm.asesores.splice(vm.asesores.indexOf(asesor), 1)
+                });
+    }
     },
-     computed:{
+    computed:{
     searchAsesores: function(){
-      return this.asesores
+      return this.asesores;
     }
   },
     created: function(){
