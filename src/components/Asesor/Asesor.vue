@@ -71,7 +71,6 @@ import ModalForm from '@/components/Asesor/ModalForm'
     methods:{
         getAsesors(){
            this.$http.get('/api/Asesors').then((res) => {
-            // this.clientes = res.body;
             this.asesores=res.data;
     
           });

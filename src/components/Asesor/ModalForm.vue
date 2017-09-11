@@ -55,7 +55,7 @@ export default {
     		nombre:'',
     		telf:'',
     		fecha_contrato:''
-    		// activo:'true',
+    		
     	}
     };
   },
