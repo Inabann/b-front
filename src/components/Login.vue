@@ -53,13 +53,14 @@ export default {
   methods: {
   	login(){
       this.$http.post('/api/usuarios/login', this.cred).then((res, err) => {
-      	console.log(res.data)
-        this.$auth.setToken(res.data.id, res.data.userId, res.data.created, res.data.ttl);
-        this.$router.push('/hello');
+        this.$http.get('/api/usuarios/'+res.data.userId+'?access_token='+res.data.id).then( response => {
+          this.$auth.setToken(res.data.id, res.data.userId, res.data.created, res.data.ttl, response.data.admin);
+          this.$router.push('/hello');
           const loadingComponent = this.$loading.open()
           setTimeout(() => {
             loadingComponent.close()
             }, 0.5 * 1000)
+          })
       });
     }
   }

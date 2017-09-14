@@ -1,25 +1,40 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Asesor from '@/components/Asesor/Asesor'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
-      path: '/hello',
-      name: 'Hello',
-      component: Hello
+      path: '/home',
+      name: 'Home',
+      component: Home,
+      meta: {
+        forAuth: true
+      }
     },
     {
     	path: '/login',
-    	component: Login
-    }, {
+    	component: Login,
+      meta: {
+        forVisitors: true
+      }
+    }, 
+    {
       path: '/asesor',
       name: 'Asesor',
-      component: Asesor
+      component: Asesor,
+      meta: {
+        forAuth: true
+      }
     },
+    {
+      path: '*',
+      redirect: '/'
+    }
   ]
 })

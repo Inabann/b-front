@@ -1,10 +1,11 @@
 export default function (Vue) {
 	Vue.auth = {
-		setToken(token, userId, expi, ttl){
+		setToken(token, userId, expi, ttl, admin){
 			localStorage.setItem('accessToken', token);
 			localStorage.setItem('userId', userId);
 			localStorage.setItem('expi', expi);
 			localStorage.setItem('ttl', ttl);
+			localStorage.setItem('admin', admin);
 		},
 
 		destroyToken(){
@@ -12,6 +13,7 @@ export default function (Vue) {
 			localStorage.removeItem('userId');
 			localStorage.removeItem('expi');
 			localStorage.removeItem('ttl');
+			localStorage.removeItem('admin');
 		},
 		getToken(){
 			var data = {};
@@ -19,8 +21,10 @@ export default function (Vue) {
 			var userId = localStorage.getItem('userId');
 			var expi = localStorage.getItem('expi');
 			var ttl = localStorage.getItem('ttl');
+			var admin = localStorage.getItem('admin');
 			data.token = token;
 			data.userId = userId;
+			data.admin = admin;
 
 			if (!token )
 				return null;
@@ -35,6 +39,13 @@ export default function (Vue) {
 		
 		isAuthd(){
 			if(this.getToken()){
+				return true;
+			} else {
+				return false;
+			}
+		},
+		isAdmin(){
+			if(this.getToken().admin){
 				return true;
 			} else {
 				return false;

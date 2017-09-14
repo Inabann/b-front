@@ -12,8 +12,9 @@ import Buefy from 'buefy'
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios)
-Vue.use(Buefy)
+Vue.use(Buefy, { defaultIconPack: 'fa' })
 Vue.use(Auth)
+
 
 /* eslint-disable no-new */
 new Vue({
