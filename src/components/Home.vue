@@ -1,18 +1,4 @@
 <template>
-<<<<<<< HEAD
-	<h1>home</h1>
-</template>
-
-<script>
-export default {
-
-  name: 'Home',
-
-  data () {
-    return {
-
-    };
-=======
   <div>
     <Navbar @statusNav="statusMenu = $event"></Navbar> 
       <div class="columns " style="margin-top: 0px; margin-left: 0px; margin-right: 0px;">
@@ -44,14 +30,10 @@ export default {
     return {
       statusMenu: false
     }
->>>>>>> f34edf630779bdb33f5f683234841da8f542359c
   }
 };
 </script>
 
-<<<<<<< HEAD
-<style lang="css" scoped>
-=======
 <style lang="css">
 .columns:last-child {
     margin-bottom: 0;
@@ -62,5 +44,4 @@ export default {
 
  }
 
->>>>>>> f34edf630779bdb33f5f683234841da8f542359c
 </style>
