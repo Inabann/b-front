@@ -1,9 +1,9 @@
 <template>
 	<aside class="menu">
-  <p class="menu-label">
-   <span >General</span>
-  </p>
- <ul class="menu-list">
+	  <p class="menu-label">
+	   <span >General</span>
+	  </p>
+ 		<ul class="menu-list">
 
 	  </ul>
 	  <p class="menu-label">
@@ -17,7 +17,9 @@
 	    <span>VENTAS</span>
 	  </p>
 	  <ul class="menu-list">
-
+			<ul class="menu-list">
+				<li ><router-link :to="{ path: '/home/plan'} " replace :class="{ 'is-active': menu[4] }" @click.native="cambiar(4)"><span> Plan</span></router-link></li>
+			</ul>
 	  </ul>
 	  <p class="menu-label">
 	  	<span>Cliente</span>
@@ -31,7 +33,7 @@
 	  <br class="is-hidden-mobile">
 	  <br class="is-hidden-mobile">
 	  <br class="is-hidden-mobile">
-</aside>
+	</aside>
 </template>
 
 <script>

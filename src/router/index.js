@@ -4,7 +4,7 @@ import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Dashboard from '@/components/Dashboard/Dashboard'
 import Asesor from '@/components/Asesor/Asesor'
-
+import Plan from '@/components/Plan/Plan'
 Vue.use(Router)
 
 export default new Router({
@@ -32,7 +32,12 @@ export default new Router({
           path: 'dashboard',
           component: Dashboard,
           meta: { forAuth : true}
-        }
+        },
+        {
+          path: 'plan',
+          component: Plan,
+          meta: { forAuth : true}
+        },
       ]
     },
     {
