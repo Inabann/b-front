@@ -12,7 +12,7 @@ export default {
 
 <style lang="scss">
 @import "~bulma/sass/utilities/_all";
-
+@import '../node_modules/font-awesome/css/font-awesome.css';
 
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
