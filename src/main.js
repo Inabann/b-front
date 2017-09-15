@@ -15,6 +15,44 @@ Vue.use(VueAxios, axios)
 Vue.use(Buefy, { defaultIconPack: 'fa' })
 Vue.use(Auth)
 
+router.beforeEach(
+	(to, from, next) => {
+		if(to.matched.some(record => record.meta.forVisitors)) {
+			if(Vue.auth.isAuthd()){
+				if(to.path !== '/home/dashboard'){
+					next('/home/dashboard')
+				}
+			} else{
+				next()
+			}
+		} else {
+			next()
+		}
+		if(to.matched.some(record => record.meta.forAuth)) {
+			if(!Vue.auth.isAuthd()){
+				if(to.path !== '/'){
+					next('/')
+				}
+			} else{
+				next()
+			}
+		} else {
+			next()
+		}
+		if(to.matched.some(record => record.meta.forAdmin)){
+			if(!Vue.auth.isAdmin()){
+				if(to.path !== '/home/dashboard'){
+					next('/home/dashboard')
+				}
+			} else{
+				next()
+			}
+		} else {
+			next()
+		}
+	}
+);
+
 
 /* eslint-disable no-new */
 new Vue({

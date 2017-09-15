@@ -70,17 +70,17 @@ import ModalForm from '@/components/Asesor/ModalForm'
     },
     methods:{
         getAsesors(){
-           this.$http.get('/api/Asesors').then((res) => {
-            this.asesores=res.data;
+          //  this.$http.get('/api/Asesors').then((res) => {
+          //   this.asesores=res.data;
     
-          });
+          // });
         },
 
     remove(asesor){
-       this.$http.delete('/api/Asesors/'+asesor.id).then((res) => {
-                let vm = this
-                vm.asesores.splice(vm.asesores.indexOf(asesor), 1)
-                });
+       // this.$http.delete('/api/Asesors/'+asesor.id).then((res) => {
+       //          let vm = this
+       //          vm.asesores.splice(vm.asesores.indexOf(asesor), 1)
+       //          });
     }
     },
     computed:{

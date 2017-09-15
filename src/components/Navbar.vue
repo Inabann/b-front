@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     logout(){
-      this.$http.post('/api/Users/logout?access_token='+ this.$auth.getToken().token).then((res) => {
+      this.$http.post('/api/usuarios/logout?access_token='+ this.$auth.getToken().token).then((res) => {
         this.$auth.destroyToken();
         this.$router.push('/');
       });

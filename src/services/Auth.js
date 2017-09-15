@@ -36,7 +36,6 @@ export default function (Vue) {
 				return data;
 			}
 		},
-		
 		isAuthd(){
 			if(this.getToken()){
 				return true;
@@ -45,12 +44,12 @@ export default function (Vue) {
 			}
 		},
 		isAdmin(){
-			if(this.getToken().admin){
+			if(this.getToken().admin == true){
 				return true;
 			} else {
 				return false;
 			}
-		},
+		}
 	}
 
 	Object.defineProperties(Vue.prototype, {

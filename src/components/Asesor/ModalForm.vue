@@ -61,11 +61,11 @@ export default {
   },
   methods: {
     SaveAsesor(){
-       this.$http.post('/api/Asesors', this.asesor).then(res => {
-       this.$emit('newList', this.asesoress);
-       this.$parent.close()
+       // this.$http.post('/api/Asesors', this.asesor).then(res => {
+       // this.$emit('newList', this.asesoress);
+       // this.$parent.close()
 
-          })
+       //    })
     }
   }
 };
