@@ -6,7 +6,7 @@
       <h1 class="has-text-centered title"><span class="has-text-info">Lista de Planes</span></h1>
     </div>
     <div class="column is-offset-4">
-      <button class="button is-info is-medium" @click="isComponentModalActive = true; sendPlan = null "><span class="icon">
+      <button class="button is-warning is-medium" @click="isComponentModalActive = true; sendPlan = null "><span class="icon">
       <i class="fa fa-plus"></i></span><span>Nuevo Plan</span></button>
     </div>
   </div>
