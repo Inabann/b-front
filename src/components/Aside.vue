@@ -1,5 +1,6 @@
 <template>
 	<aside class="menu">
+	<img src="../assets/image (1).png">
 	  <p class="menu-label">
 	   <span >General</span>
 	  </p>
@@ -58,7 +59,7 @@ export default {
 
 <style lang="css" scoped>
 .menu-label span{
-	color: white;
+	color: #038E7C;
 }
 .menu-list span{
 	color: white;

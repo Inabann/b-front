@@ -40,7 +40,7 @@ export default {
 }
 
  #appmenu {
-  background-color: #3A3B4A;
+  background-color: #FFC300;
 
  }
 

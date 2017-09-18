@@ -7,7 +7,7 @@
           <i class="fa fa-bars"></i>
         </span>
       </a>
-        <img src="../assets/logo.png">
+  
     </div>
     
     
