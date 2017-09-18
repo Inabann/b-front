@@ -1,12 +1,10 @@
 <template>
-    <div class="column is-half is-offset-one-quarter">
-      <h1 class="title">Lista de Asesores</h1>
-
-	      <button class="button is-info is-medium" @click="isComponentModalActive=true"><span>Nuevo Asesor</span></button>
-	
-	     <b-modal :active.sync="isComponentModalActive" has-modal-card>
-            <modal-form :asesores="asesores" @newList="asesoress = $event"></modal-form>
-        </b-modal>
+  <div class="column is-half is-offset-one-quarter">
+  <h1 class="title">Lista de Asesores</h1>
+  <button class="button is-info is-medium" @click="isComponentModalActive=true"><span>Nuevo Asesor</span></button>
+  <b-modal :active.sync="isComponentModalActive" has-modal-card>
+    <ModalForm :asesores="asesores" @newList="asesoress = $event"></ModalForm>
+  </b-modal>
     <section>
              <b-table
             :data="searchAsesores"
@@ -50,6 +48,7 @@
     	
     </div>
 </template>
+
 <script>
 
 import ModalForm from '@/components/Asesor/ModalForm'

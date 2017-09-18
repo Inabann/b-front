@@ -12,8 +12,8 @@
   </div>
     
 
-    <b-modal :active.sync="isComponentModalActive" has-modal-card>
-        <modal-form :plans="plans" :sendPlan="sendPlan" @newList="plans = $event"></modal-form>
+    <b-modal :active.sync="isComponentModalActive" has-modal-card :canCancel="canCancel">
+        <ModalForm :plans="plans" :sendPlan="sendPlan" @newList="plans = $event"></ModalForm>
     </b-modal>
 
     <b-table :data="searchPlan" :mobile-cards="true" >
@@ -49,6 +49,7 @@ export default {
     return {
       plans: [],
       sendPlan: {},
+      canCancel: ['escape', 'x', 'outside'], //poner esta wea para q no salga el error
       isComponentModalActive: false
     };
   },
