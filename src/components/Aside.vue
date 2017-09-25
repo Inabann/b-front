@@ -5,13 +5,17 @@
 	   <span >General</span>
 	  </p>
  		<ul class="menu-list">
-
+			<ul class="menu-list">
+				<li ><router-link :to="{ path: '/home/dashboard'} " replace :class="{ 'is-active': menu[0] }" @click.native="cambiar(0)"><span> Dashboard</span></router-link></li>
+			</ul>
 	  </ul>
 	  <p class="menu-label">
 	    <span >Inventario</span>
 	  </p>
 	  <ul class="menu-list">
-
+			<ul class="menu-list">
+				<li ><router-link :to="{ path: '/home/facturas'} " replace :class="{ 'is-active': menu[2] }" @click.native="cambiar(2)"><span> Facturas</span></router-link></li>
+			</ul>
 
 	  </ul>
 	  <p class="menu-label">
