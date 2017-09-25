@@ -26,6 +26,11 @@
 				<li ><router-link :to="{ path: '/home/plan'} " replace :class="{ 'is-active': menu[4] }" @click.native="cambiar(4)"><span> Plan</span></router-link></li>
 			</ul>
 	  </ul>
+	  <ul class="menu-list">
+			<ul class="menu-list">
+				<li ><router-link :to="{ path: '/home/producto'} " replace :class="{ 'is-active': menu[5] }" @click.native="cambiar(5)"><span> Producto</span></router-link></li>
+			</ul>
+	  </ul>
 	  <p class="menu-label">
 	  	<span>Cliente</span>
 	  </p>

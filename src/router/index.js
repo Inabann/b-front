@@ -6,6 +6,7 @@ import Dashboard from '@/components/Dashboard/Dashboard'
 import Facturas from '@/components/Factura/Facturas'
 import Asesor from '@/components/Asesor/Asesor'
 import Plan from '@/components/Plan/Plan'
+import Producto from '@/components/Producto/Producto'
 Vue.use(Router)
 
 export default new Router({
@@ -37,6 +38,11 @@ export default new Router({
         {
           path: 'plan',
           component: Plan,
+          meta: { forAuth : true}
+        },
+        {
+          path: 'producto',
+          component: Producto,
           meta: { forAuth : true}
         },
         {

@@ -16,11 +16,23 @@
         <ModalForm :plans="plans" :sendPlan="sendPlan" @newList="plans = $event"></ModalForm>
     </b-modal>
 
+    <b-field>
+      <b-field grouped>
+        <b-input placeholder="plan" type="search" icon-pack="fa" icon="search" v-model="plfilter" class="inputBusqueda"></b-input>
+        <b-input placeholder="producto" type="search" icon-pack="fa" icon="search" v-model="pfilter" class="inputBusqueda"></b-input>
+      </b-field>
+    </b-field>
+
     <b-table :data="searchPlan" :mobile-cards="true" >
       <template scope="props">
         <b-table-column field="nombre" label="Plan" sortable>
-          {{ props.row.nombre }}
+          {{ props.row.nombre | capitalize}}
         </b-table-column>
+        <b-table-column field="productoId" label="Producto" sortable>
+        <div v-if="props.row.producto">
+          {{ props.row.producto.nombre | capitalize }}
+        </div>
+      </b-table-column>
         <b-table-column field="monto" label="Precio" sortable>
           {{ props.row.monto }}
         </b-table-column>
@@ -48,6 +60,8 @@ export default {
   data () {
     return {
       plans: [],
+      plfilter: '',
+      pfilter:'',
       sendPlan: {},
       canCancel: ['escape', 'x', 'outside'], //poner esta wea para q no salga el error
       isComponentModalActive: false
@@ -55,10 +69,7 @@ export default {
   },
   methods:{
     getPlans(){
-      this.$http.get('/api/Plans').then((res) => {
-        let vm = this;
-        vm.plans = res.data;
-      });
+      this.$http.get('/api/Plans?filter=%7B%22include%22%3A%20%22producto%22%7D').then(res => this.plans = res.data).catch(err => console.log(err))
     },
     deletePlan(plan){
         this.$dialog.confirm({
@@ -85,7 +96,10 @@ export default {
   computed:
   {
     searchPlan: function(){
-      return this.plans;
+      return this.plans.filter((plan) => {
+        return plan.producto.nombre.match(this.pfilter.toLowerCase()) 
+        && plan.nombre.match(this.plfilter.toLowerCase());
+      });
     }
   },
   created: function(){
