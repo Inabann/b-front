@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Dashboard from '@/components/Dashboard/Dashboard'
 import Facturas from '@/components/Factura/Facturas'
+import Stock from '@/components/Factura/Stock'
 import Asesor from '@/components/Asesor/Asesor'
 import Plan from '@/components/Plan/Plan'
 import Producto from '@/components/Producto/Producto'
@@ -48,6 +49,11 @@ export default new Router({
         {
           path: 'facturas',
           component: Facturas,
+          meta: { forAuth : true}
+        },
+        {
+          path: 'stock',
+          component: Stock,
           meta: { forAuth : true}
         }
       ]

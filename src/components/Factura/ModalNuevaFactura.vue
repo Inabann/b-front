@@ -38,7 +38,7 @@
 	    	</thead>
 	    	<tbody>
 	    		<tr v-for="item in productosAgregados">
-	    			<td>{{item.producto}}</td>
+	    			<td>{{item.productoId}}</td>
 	    			<td>{{item.serie}}</td>
 	    			<td><a class="button is-danger is-small" @click="eliminar(item)">eliminar</a></td>
 	    		</tr>
@@ -77,12 +77,12 @@ export default {
   		this.$http.get('/api/Productos').then(res => this.productos = res.data)
   	},
   	addProducto(){
-  		this.productosAgregados.push({serie: this.num_serie, productoId: this.productoSelec.id, producto: this.productoSelec.nombre})
+  		this.productosAgregados.push({serie: this.num_serie, productoId:this.productoSelec.nombre})
   	},
   	guardar(){
   		this.$http.post('/api/Facturas', this.factura).then(res => {
   			this.productosAgregados.forEach( item => {
-  				this.$http.post('/api/DetalleProductos', {serie: item.serie, productoId: item.productoId, facturaId: res.data.id})
+  				this.$http.post('/api/DetalleProductos', {serie: item.serie, productoId: item.productoId, facturaId: res.data.codigo})
   			})
   			this.$parent.close()
   		})

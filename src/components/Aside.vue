@@ -15,6 +15,7 @@
 	  <ul class="menu-list">
 			<ul class="menu-list">
 				<li ><router-link :to="{ path: '/home/facturas'} " replace :class="{ 'is-active': menu[2] }" @click.native="cambiar(2)"><span> Facturas</span></router-link></li>
+				<li ><router-link :to="{ path: '/home/stock'} " replace :class="{ 'is-active': menu[3] }" @click.native="cambiar(3)"><span> Stock</span></router-link></li>
 			</ul>
 
 	  </ul>

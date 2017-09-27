@@ -55,7 +55,7 @@ export default {
   		this.$http.get('/api/Facturas').then(res => this.facturas = res.data)
   	},
   	detalles(row){
-  		this.$http.get('/api/Facturas/'+row.id+'/detalleProductos').then( res => this.detalleFactura = res.data)
+  		this.$http.get('/api/Facturas/'+row.codigo+'/detalleProductos').then( res => this.detalleFactura = res.data)
   	}
   },
   created(){
