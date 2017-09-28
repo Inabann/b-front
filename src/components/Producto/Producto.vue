@@ -2,7 +2,6 @@
   <div class="container">
   <div class="columns">
     <div class="column">
-      
       <h1 class="has-text-centered title"><span class="has-text-info">Lista de Productos</span></h1>
     </div>
     <div class="column is-offset-4">
@@ -10,8 +9,6 @@
       <i class="fa fa-plus"></i></span><span>Nuevo Producto</span></button>
     </div>
   </div>
-    
-
     <b-modal :active.sync="isComponentModalActive" has-modal-card :canCancel="canCancel">
         <ModalForm :productos="productos" @newList="productos = $event"></ModalForm>
     </b-modal>

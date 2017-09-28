@@ -5,8 +5,11 @@
         
     </header>
     <section class="modal-card-body">
-       <b-field label="Tipo">
-        <b-input type="text" v-model="producto.tipo" placeholder="Tipo" required />
+      <b-field label="Tipo">
+        <b-select placeholder="Tipo" v-model="producto.tipo" required>
+          <option value="equipo">Equipo</option>
+          <option value="chip">Chip</option>
+        </b-select>
       </b-field>
       <b-field label="Nombre">
         <b-input type="text" v-model="producto.nombre" placeholder="Nombre" required />

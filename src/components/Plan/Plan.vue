@@ -1,21 +1,44 @@
 <template>
   <div class="container">
-  <div class="columns">
-    <div class="column">
-      
-      <h1 class="has-text-centered title"><span class="has-text-info">Lista de Planes</span></h1>
-    </div>
-    <div class="column is-offset-4">
-      <button class="button is-warning is-medium" @click="isComponentModalActive = true; sendPlan = null "><span class="icon">
-      <i class="fa fa-plus"></i></span><span>Nuevo Plan</span></button>
-    </div>
-  </div>
-    
+  <br>
+  <b-modal :active.sync="isComponentModalActive" has-modal-card :canCancel="canCancel">
+      <ModalForm :plans="plans" :sendPlan="sendPlan" @newList="plans = $event"></ModalForm>
+  </b-modal>
 
-    <b-modal :active.sync="isComponentModalActive" has-modal-card :canCancel="canCancel">
-        <ModalForm :plans="plans" :sendPlan="sendPlan" @newList="plans = $event"></ModalForm>
-    </b-modal>
+  <section>
+    <b-panel>
+      <strong slot="header">PLAN</strong>
+      <div class="content">
+        <div class="columns">
+          <div class="column is-4">
+            <b-field label="Producto">
+              <b-select placeholder="Producto" icon="list" v-model="plan.productoId">
+                <option v-for="producto in productos" :value="producto.nombre" >{{ producto.nombre }}</option>
+              </b-select>
+            </b-field>  
+          </div>
+          <div class="column is-5">
+            <b-field label="Nombre Plan" expanded>
+              <b-autocomplete v-model="plan.nombre" placeholder="Plan" :data="searchPlan" field="nombre" @select="option => nombre = option" required></b-autocomplete>
+            </b-field>
+          </div>
+          <div class="column is-3">
+            <b-field label="Precio">
+              <b-input type="number" v-model="plan.monto" placeholder="S/." icon="money" required />
+            </b-field>                    
+          </div>
 
+          <div class="column is-2">
+            <b-field label="Opcion">
+              <button class="button is-primary" @click="savePlan">Guardar</button>
+            </b-field>
+          </div>
+        </div>
+      </div>
+    </b-panel>
+  </section>
+  <br>
+  <h1 class="has-text-info title"><span class="has-text-info">Lista de Planes</span></h1>
     <b-field>
       <b-field grouped>
         <b-input placeholder="plan" type="search" icon-pack="fa" icon="search" v-model="plfilter" class="inputBusqueda"></b-input>
@@ -23,14 +46,14 @@
       </b-field>
     </b-field>
 
-    <b-table :data="searchPlan" :mobile-cards="true" >
+    <b-table :data="searchPlan" :mobile-cards="true" :paginated="true" per-page="10" default-sort-direction="desc" >
       <template scope="props">
         <b-table-column field="nombre" label="Plan" sortable>
-          {{ props.row.nombre | capitalize}}
+          {{ props.row.nombre }}
         </b-table-column>
         <b-table-column field="productoId" label="Producto" sortable>
         <div v-if="props.row.producto">
-          {{ props.row.producto.nombre | capitalize }}
+          {{ props.row.producto.nombre }}
         </div>
       </b-table-column>
         <b-table-column field="monto" label="Precio" sortable>
@@ -60,6 +83,12 @@ export default {
   data () {
     return {
       plans: [],
+      productos: [],
+      plan: {
+        nombre: '',
+        monto: '',
+        productoId: ''
+      },
       plfilter: '',
       pfilter:'',
       sendPlan: {},
@@ -68,8 +97,21 @@ export default {
     };
   },
   methods:{
+    getProductos(){
+      this.$http.get('/api/Productos').then(res => {
+      this.productos = res.data
+      })
+    },
     getPlans(){
       this.$http.get('/api/Plans?filter=%7B%22include%22%3A%20%22producto%22%7D').then(res => this.plans = res.data).catch(err => console.log(err))
+    },
+    savePlan(){
+      this.plan.nombre = this.plan.nombre.toLowerCase()
+      this.$http.post('/api/Plans', this.plan).then(res => {
+      this.plans.unshift(res.data)
+      this.$emit('newList', this.plans)
+      this.$toast.open({message:'Plan guardado',type: 'is-success'})
+      })
     },
     deletePlan(plan){
         this.$dialog.confirm({
@@ -104,6 +146,7 @@ export default {
   },
   created: function(){
     this.getPlans();
+    this.getProductos();
   }
 };
 </script>
