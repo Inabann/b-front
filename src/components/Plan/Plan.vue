@@ -38,7 +38,7 @@
     </b-panel>
   </section>
   <br>
-  <h1 class="has-text-info title"><span class="has-text-info">Lista de Planes</span></h1>
+  <h1 class="has-text-centered title"><span class="has-text-info">Lista de Planes</span></h1>
     <b-field>
       <b-field grouped>
         <b-input placeholder="plan" type="search" icon-pack="fa" icon="search" v-model="plfilter" class="inputBusqueda"></b-input>

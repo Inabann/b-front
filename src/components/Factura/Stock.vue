@@ -1,5 +1,8 @@
 <template>
 	<div>
+    <div class="column">
+      <h1 class="has-text-centered title"><span class="has-text-info">Almacen</span></h1>
+    </div>  
 		<b-table :data="stock" :mobile-cards="true" :paginated="true" per-page="15" default-sort-direction="desc"
 			default-sort="cantidad">
 

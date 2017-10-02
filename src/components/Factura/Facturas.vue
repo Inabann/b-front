@@ -1,7 +1,14 @@
 <template>
 	<div>
-		<button class="button is-primary" @click="isComponentModalActive = true">Agregar Factura</button>
-		
+  <div class="columns">
+    <div class="column">
+      <h1 class="has-text-centered title"><span class="has-text-info">Lista de Facturas</span></h1>
+    </div>  
+    <div class="column is-offset-4">
+		  <button class="button is-warning is-medium" @click="isComponentModalActive = true"><span class="icon">
+      <i class="fa fa-plus"></i></span><span>Agregar Factura</span></button>
+    </div> 
+	</div> 	
 		<b-modal :active.sync="isComponentModalActive" :canCancel="canCancel" has-modal-card>
       <ModalNuevaFactura></ModalNuevaFactura>
     </b-modal>

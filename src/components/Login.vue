@@ -1,11 +1,13 @@
 <template>
-  <section class="hero is-fullheight is-dark is-bold">
+  <section class="hero is-fullheight is-warning is-bold">
     <div class="hero-body">
       <div class="container">
         <div class="columns is-vcentered">
           <div class="column is-4 is-offset-4">
             <h1 class="title">
+             <div class="column is-offset-4">
              Login
+             </div>
             </h1>
             <div class="box">
               <label class="label">Username</label>
@@ -25,8 +27,9 @@
               
               <hr>
               <p class="control">
-                <button class="button is-primary" @click="login()">Login</button>
-                
+                <div class="column is-offset-4">
+                  <button class="button is-primary" @click="login()">Ingresar</button>
+                </div>
               </p>
             </div>
           </div>
