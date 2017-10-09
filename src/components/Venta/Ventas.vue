@@ -1,10 +1,11 @@
 <template>
+	<h1>ventas</h1>
 </template>
 
 <script>
 export default {
 
-  name: 'Usuario',
+  name: 'Ventas',
 
   data () {
     return {

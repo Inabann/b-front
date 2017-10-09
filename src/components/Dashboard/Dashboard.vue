@@ -9,8 +9,18 @@ export default {
 
   data () {
     return {
-
+    	saldo: ''
     };
+  },
+  methods:{
+  	getSaldo(){
+  		this.$http.get('/api/Productos?filter[where][total][gt]=0').then(res => {
+  			console.log(res.data)
+  		})
+  	}
+  },
+  created(){
+  	this.getSaldo()
   }
 };
 </script>

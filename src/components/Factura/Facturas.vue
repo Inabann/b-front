@@ -5,12 +5,12 @@
       <h1 class="has-text-centered title"><span class="has-text-info">Lista de Facturas</span></h1>
     </div>  
     <div class="column is-offset-4">
-		  <button class="button is-warning is-medium" @click="isComponentModalActive = true"><span class="icon">
+		  <button class="button is-warning is-medium" @click="isComponentModalActive = true"  ><span class="icon">
       <i class="fa fa-plus"></i></span><span>Agregar Factura</span></button>
     </div> 
 	</div> 	
 		<b-modal :active.sync="isComponentModalActive" :canCancel="canCancel" has-modal-card>
-      <ModalNuevaFactura></ModalNuevaFactura>
+      <ModalNuevaFactura @facturaAgregada="nuevaFactura($event)"></ModalNuevaFactura>
     </b-modal>
 		<b-table
       :data="facturas"
@@ -19,13 +19,17 @@
 
       <template scope="props">
         <b-table-column label="Codigo" width="40"  numeric>
-          {{ props.row.codigo }}
+          {{ props.row.codigo | uppercase}}
         </b-table-column>
         <b-table-column label="Fecha de registro" centered>
-          {{ props.row.fecha }}
+          {{ props.row.fecha | moment("add","1 days","YYYY / MM / DD")}}
         </b-table-column>
         <b-table-column label="Total">
           {{ props.row.total }}
+        </b-table-column>
+        <b-table-column label="Opciones">
+          <a class="button is-warning is-small">Editar</a>
+          <a class="button is-danger is-small" @click="removeFactura(props.row)">Eliminar</a>
         </b-table-column>
       </template>
 
@@ -54,7 +58,7 @@ export default {
     	isComponentModalActive: false,
     	canCancel: ['escape', 'x', 'outside'],
     	facturas: [],
-    	detalleFactura: {}
+    	detalleFactura: []
     };
   },
   methods: {
@@ -63,7 +67,18 @@ export default {
   	},
   	detalles(row){
   		this.$http.get('/api/Facturas/'+row.codigo+'/detalleProductos').then( res => this.detalleFactura = res.data)
-  	}
+  	},
+    removeFactura(factura){
+      this.$http.delete('/api/Facturas/'+factura.codigo+'/detalleProductos').then(res => {
+        this.$http.delete('/api/Facturas/'+factura.codigo).then(resp => {
+          this.facturas.splice(this.facturas.indexOf(factura), 1)
+          console.log('factura y productos eliminados')
+        })
+      })
+    },
+    nuevaFactura(factura){
+      this.facturas.unshift(factura)
+    }
   },
   created(){
   	this.getFacturas()

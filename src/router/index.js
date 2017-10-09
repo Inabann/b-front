@@ -8,6 +8,9 @@ import Stock from '@/components/Factura/Stock'
 import Asesor from '@/components/Asesor/Asesor'
 import Plan from '@/components/Plan/Plan'
 import Producto from '@/components/Producto/Producto'
+import Ventas from '@/components/Venta/Ventas'
+import Registro from '@/components/Venta/Registro'
+
 Vue.use(Router)
 
 export default new Router({
@@ -29,7 +32,7 @@ export default new Router({
         {
           path: 'asesores',
           component: Asesor,
-          meta: { forAdmin : true}
+          meta: { forAuth : true}
         },
         {
           path: 'dashboard',
@@ -54,6 +57,16 @@ export default new Router({
         {
           path: 'stock',
           component: Stock,
+          meta: { forAuth : true}
+        },
+        {
+          path: 'ventas',
+          component: Ventas,
+          meta: { forAuth : true}
+        },
+        {
+          path: 'registro',
+          component: Registro,
           meta: { forAuth : true}
         }
       ]

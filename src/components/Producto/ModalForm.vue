@@ -6,10 +6,11 @@
     </header>
     <section class="modal-card-body">
       <b-field label="Tipo">
-        <b-select placeholder="Tipo" v-model="producto.tipo" required>
-          <option value="equipo">Equipo</option>
-          <option value="chip">Chip</option>
-        </b-select>
+        <b-switch v-model="producto.tipo" 
+          true-value="equipo"
+          false-value="chip">
+          {{ producto.tipo | capitalize }}
+        </b-switch>
       </b-field>
       <b-field label="Nombre">
         <b-input type="text" v-model="producto.nombre" placeholder="Nombre" required />
@@ -28,7 +29,7 @@ export default {
     data () {
       return {
         producto: {
-          tipo: '',
+          tipo: 'equipo',
           nombre: ''
         }
       }

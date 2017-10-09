@@ -1,97 +1,75 @@
 <template>
-  <div class="column is-half is-offset-one-quarter">
-  <h1 class="title">Lista de Asesores</h1>
-  <button class="button is-info is-medium" @click="isComponentModalActive=true"><span>Nuevo Asesor</span></button>
-  <b-modal :active.sync="isComponentModalActive" has-modal-card>
-    <ModalForm :asesores="asesores" @newList="asesoress = $event"></ModalForm>
-  </b-modal>
-    <section>
-             <b-table
-            :data="searchAsesores"
-            
-            :striped="isStriped"
-           >
-
-            <template scope="props">
-                <b-table-column label="DNI" width="100" numeric>
-                    {{ props.row.dni }}
-                </b-table-column>
-
-                <b-table-column label="Nombre">
-                    {{ props.row.nombre }}
-                </b-table-column>
-
-                <b-table-column label="Teléfono">
-                    {{ props.row.telf }}
-                </b-table-column>
-                <b-table-column label="Opciones" >
-                <a class="button is-danger is-small" @click="remove(props.row)" >Eliminar</a>
-                </b-table-column>
-
-            </template>
-
-            <template slot="empty">
-                <section class="section">
-                    <div class="content has-text-grey has-text-centered">
-                        <p>
-                            <b-icon
-                                icon="sentiment_very_dissatisfied"
-                                size="is-large">
-                            </b-icon>
-                        </p>
-                        <p>Nothing here.</p>
-                    </div>
-                </section>
-            </template>
-        </b-table>
-    </section>
-    	
-    </div>
+  <div>
+    <button class="button is-info is-medium" @click="isComponentModalActive=true"><span>Nuevo Asesor</span></button>
+    <b-modal :active.sync="isComponentModalActive" has-modal-card>
+      <ModalForm @nuevoAsesor="addNuevoAsesor($event)"></ModalForm>
+    </b-modal>
+    <b-table :data="asesores" :mobile-cards="true" :paginated="true" per-page="10" default-sort-direction="desc" >
+      <template scope="props">
+        <b-table-column field="dni" label="DNI" sortable>
+          {{ props.row.dni }}
+        </b-table-column>
+        <b-table-column field="nombre" label="Nombres y Apellidos" sortable>
+          {{ props.row.nombre }}
+        </b-table-column>
+        <b-table-column field="telf" label="Telefono">
+          <div v-if="props.row.telf">
+            {{ props.row.telf }}
+          </div>
+        </b-table-column>
+        <b-table-column field="email" label="Email">
+          <div v-if="props.row.email">
+            {{ props.row.email }}
+          </div>
+        </b-table-column>
+        <b-table-column field="fecha_contrato" label="Fecha Contrato" sortable>
+          {{ props.row.fecha_contrato | moment("add","1 days","YYYY / MM / DD") }}
+        </b-table-column>
+        <b-table-column field="username" label="Usuario" sortable>
+          {{ props.row.username }}
+        </b-table-column>
+        <b-table-column field="activo" label="Estado" sortable>
+          <span :class="props.row.activo ? 'icon has-text-info': 'icon has-text-danger'">
+            <i :class="props.row.activo? 'fa fa-thumbs-up':'fa fa-thumbs-down' "></i>
+          </span>
+        </b-table-column>
+        <b-table-column  label="Opciones" >
+          <a class="button is-warning is-small">Editar</a>
+          <a class="button is-danger is-small">Eliminar</a>
+        </b-table-column>
+      </template>
+      <div slot="empty" class="has-text-centered">
+        Cargando ...
+      </div>
+    </b-table> 	
+  </div>
 </template>
 
 <script>
 
 import ModalForm from '@/components/Asesor/ModalForm'
 
- export default {
+export default {
  	name: 'Asesor',
-    components: {
-    ModalForm 
-    },
-    data(){
-        return {
-            asesores:[],
-            isStriped: true,
-            isComponentModalActive:false
-                
-               
-            }
-    },
-    methods:{
-        getAsesors(){
-          //  this.$http.get('/api/Asesors').then((res) => {
-          //   this.asesores=res.data;
-    
-          // });
-        },
-
-    remove(asesor){
-       // this.$http.delete('/api/Asesors/'+asesor.id).then((res) => {
-       //          let vm = this
-       //          vm.asesores.splice(vm.asesores.indexOf(asesor), 1)
-       //          });
-    }
-    },
-    computed:{
-    searchAsesores: function(){
-      return this.asesores;
+  components: { ModalForm },
+  data(){
+    return {
+      asesores:[],
+      isComponentModalActive:false  
     }
   },
-    created: function(){
-    this.getAsesors();
-  }
-
+  methods:{
+    addNuevoAsesor(asesor){
+      this.asesores.push(asesor)
+    },
+    getAsesores(){
+      this.$http.get('/api/usuarios?access_token='+this.$auth.getToken().token).then(res => this.asesores= res.data)
     }
+  },
+  created(){
+    this.getAsesores()
+  }
+}
 </script>
 <style lang="css" scoped>
 </style>

@@ -6,12 +6,16 @@ import router from './router'
 import Auth from './services/Auth.js'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import vueMoment from 'vue-moment'
+import Vue2Filters from 'vue2-filters'
 
 import Buefy from 'buefy'
 
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios)
+Vue.use(vueMoment)
+Vue.use(Vue2Filters)
 Vue.use(Buefy, { defaultIconPack: 'fa' })
 Vue.use(Auth)
 

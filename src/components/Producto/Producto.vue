@@ -68,7 +68,7 @@ export default {
             hasIcon: true,
             onConfirm: () => {
                 this.$toast.open({message:'Producto eliminado',position: 'is-bottom',type: 'is-danger'})
-                let id = producto.id
+                let id = producto.nombre
                 this.$http.delete('/api/Productos/'+id).then((res) => {
                 let vm = this
                 vm.productos.splice(vm.productos.indexOf(producto), 1)
