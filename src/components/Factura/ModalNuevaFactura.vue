@@ -79,7 +79,7 @@
 	    </table>
     </section>
     <footer class="modal-card-foot">
-        <button class="button" type="button" @click="$parent.close()">Close</button>
+        <button class="button" type="button" @click="$parent.close()">Cerrar</button>
         <button class="button is-primary" @click="guardar" v-if="!recarga">Guardar</button>
         <button class="button is-primary" @click="addSaldo" v-if="recarga">Agregar Saldo</button>
     </footer>
