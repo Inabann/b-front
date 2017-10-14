@@ -10,6 +10,7 @@ import Plan from '@/components/Plan/Plan'
 import Producto from '@/components/Producto/Producto'
 import Ventas from '@/components/Venta/Ventas'
 import Registro from '@/components/Venta/Registro'
+import Packs from '@/components/Pack/Packs'
 
 Vue.use(Router)
 
@@ -67,6 +68,11 @@ export default new Router({
         {
           path: 'registro',
           component: Registro,
+          meta: { forAuth : true}
+        },
+        {
+          path: 'packs',
+          component: Packs,
           meta: { forAuth : true}
         }
       ]

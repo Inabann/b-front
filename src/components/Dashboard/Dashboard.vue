@@ -1,26 +1,39 @@
 <template>
-	<h1 class="title is-3">dashboard</h1>
+  <div>
+    <Cards></Cards>
+    <div class="columns">
+      <div class="column">
+        <TotalporMes></TotalporMes>
+      </div>
+      <div class="column">
+        <CantidadporMes></CantidadporMes>
+      </div>
+    </div>
+    <VentasxAsesor></VentasxAsesor>
+  </div>
+	
 </template>
 
 <script>
+import Cards from '@/components/Dashboard/Cards'
+import TotalporMes from '@/components/Dashboard/TotalporMes'
+import CantidadporMes from '@/components/Dashboard/CantidadporMes'
+import VentasxAsesor from '@/components/Dashboard/VentasxAsesor'
+
 export default {
 
   name: 'Dashboard',
-
+  components: { Cards, TotalporMes, CantidadporMes, VentasxAsesor },
   data () {
     return {
-    	saldo: ''
+
     };
   },
   methods:{
-  	getSaldo(){
-  		this.$http.get('/api/Productos?filter[where][total][gt]=0').then(res => {
-  			console.log(res.data)
-  		})
-  	}
+  	
   },
   created(){
-  	this.getSaldo()
+  	
   }
 };
 </script>

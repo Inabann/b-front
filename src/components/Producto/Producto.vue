@@ -15,7 +15,7 @@
 
     <b-field>
       <b-field grouped>
-        <b-input placeholder="tipo" type="search" icon-pack="fa" icon="search" v-model="pfilter" class="inputBusqueda"></b-input>
+        <b-input placeholder="nombre" type="search" icon-pack="fa" icon="search" v-model="pfilter" class="inputBusqueda"></b-input>
       </b-field>
     </b-field>
 
@@ -41,7 +41,6 @@
 <script>
 import ModalForm from '@/components/Producto/ModalForm'
 
-
 export default {
   components: {
     ModalForm
@@ -60,28 +59,26 @@ export default {
       this.$http.get('/api/Productos').then(res => this.productos = res.data).catch(err => console.log(err))
     },
     deleteProducto(producto){
-        this.$dialog.confirm({
-            title: 'Eliminar Producto',
-            message: '¿Esta seguro de <strong>eliminar</strong> este Producto? Esta accion no se puede deshacer.',
-            confirmText: 'Eliminar',
-            type: 'is-danger',
-            hasIcon: true,
-            onConfirm: () => {
-                this.$toast.open({message:'Producto eliminado',position: 'is-bottom',type: 'is-danger'})
-                let id = producto.nombre
-                this.$http.delete('/api/Productos/'+id).then((res) => {
-                let vm = this
-                vm.productos.splice(vm.productos.indexOf(producto), 1)
-                });  
-            }
-          })
+      this.$dialog.confirm({
+        title: 'Eliminar Producto',
+        message: '¿Esta seguro de <strong>eliminar</strong> este Producto? Esta accion no se puede deshacer.',
+        confirmText: 'Eliminar',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$toast.open({message:'Producto eliminado',position: 'is-bottom',type: 'is-danger'})
+          let id = producto.nombre
+          this.$http.delete('/api/Productos/'+id).then((res) => {
+            this.productos.splice(vm.productos.indexOf(producto), 1)
+          });  
+        }
+      })
     }
   },
-  computed:
-  {
+  computed: {
     searchProducto: function(){
       return this.productos.filter((producto) => {
-        return producto.tipo.match(this.pfilter.toLowerCase());
+        return producto.nombre.match(this.pfilter.toLowerCase());
       });
     }
   },

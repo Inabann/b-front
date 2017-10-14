@@ -101,21 +101,21 @@ export default {
       })
     },
     deletePlan(plan){
-        this.$dialog.confirm({
-            title: 'Eliminar Plan',
-            message: '¿Esta seguro de <strong>eliminar</strong> este Plan? Esta accion no se puede deshacer.',
-            confirmText: 'Eliminar',
-            type: 'is-danger',
-            hasIcon: true,
-            onConfirm: () => {
-                this.$toast.open({message:'Plan eliminado',position: 'is-bottom',type: 'is-danger'})
-                let id = plan.id
-                this.$http.delete('/api/Plans/'+id).then((res) => {
-                let vm = this
-                vm.plans.splice(vm.plans.indexOf(plan), 1)
-                });  
-            }
-          })
+      this.$dialog.confirm({
+        title: 'Eliminar Plan',
+        message: '¿Esta seguro de <strong>eliminar</strong> este Plan? Esta accion no se puede deshacer.',
+        confirmText: 'Eliminar',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+            this.$toast.open({message:'Plan eliminado',position: 'is-bottom',type: 'is-danger'})
+            let id = plan.id
+            this.$http.delete('/api/Plans/'+id).then((res) => {
+              let vm = this
+              vm.plans.splice(vm.plans.indexOf(plan), 1)
+            });  
+        }
+      })
     },
     editPlan(plan){
       this.sendPlan = plan
