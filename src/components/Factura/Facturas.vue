@@ -37,6 +37,7 @@
         <article class="media">
           <div class="media-content">
             <div class="content">
+              
               {{ detalleFactura }}
             </div>
           </div>
@@ -68,14 +69,26 @@ export default {
   	detalles(row){
   		this.$http.get('/api/Facturas/'+row.codigo+'/detalleProductos').then( res => this.detalleFactura = res.data)
   	},
+
     removeFactura(factura){
-      this.$http.delete('/api/Facturas/'+factura.codigo+'/detalleProductos').then(res => {
-        this.$http.delete('/api/Facturas/'+factura.codigo).then(resp => {
-          this.facturas.splice(this.facturas.indexOf(factura), 1)
-          console.log('factura y productos eliminados')
-        })
-      })
+            this.$dialog.confirm({
+            title: 'Eliminar Factura',
+            message: '¿Esta seguro de <strong>eliminar</strong> esta Factura? Esta accion no se puede deshacer.',
+            confirmText: 'Eliminar',
+            type: 'is-danger',
+            hasIcon: true,
+            onConfirm: () => {
+                this.$toast.open({message:'Factura eliminada',position: 'is-bottom',type: 'is-danger'})
+                this.$http.delete('/api/Facturas/'+factura.codigo+'/detalleProductos').then(res => {
+                this.$http.delete('/api/Facturas/'+factura.codigo).then(resp => {
+                this.facturas.splice(this.facturas.indexOf(factura), 1)
+                console.log('factura y productos eliminados')
+                })
+              });
+            }
+          })
     },
+
     nuevaFactura(factura){
       this.facturas.unshift(factura)
     }

@@ -19,7 +19,7 @@
               </p>
               <label class="label">Password</label>
               <p class="control has-icons-left">
-                <input class="input" type="password" placeholder="password" v-model="cred.password">
+                <input class="input" type="password" placeholder="password" v-model="cred.password" password-reveal>
                 <span class="icon is-small is-left">
                   <i class="fa fa-lock"></i>
                 </span>
