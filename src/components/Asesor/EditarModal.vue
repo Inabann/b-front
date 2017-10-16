@@ -1,9 +1,21 @@
 <template>
-  <div class="modal-card">
+	<div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Formulario Nuevo Asesor</p>
+      <p class="modal-card-title">Editar Asesor</p>
     </header>
     <section class="modal-card-body">
+    	<b-field label="Estado">
+      	<div class="block">
+            <b-radio v-model="asesor.activo"
+                native-value="true">
+                Activo
+            </b-radio>
+            <b-radio v-model="asesor.activo"
+                native-value="false">
+                No Activo
+            </b-radio>
+        </div>
+        </b-field>
       <b-field grouped>
         <b-field label="DNI">
           <b-input type="text" v-model="asesor.dni" placeholder="DNI" required>
@@ -24,51 +36,35 @@
           </b-input>
         </b-field>
       </b-field>
-      <b-field label="Fecha de Contrato">
-        <b-input type="date" v-model="asesor.fecha_contrato" placeholder="Fecha de Contrato"></b-input>
-      </b-field>
-      <div class="box">
-        <b-field grouped>
-          <b-field label="Nombre de usuario" expanded>
-            <b-input type="text" v-model="asesor.username" >
-            </b-input>
-          </b-field>
-          <b-field label="Contraseña" expanded>
-            <b-input type="password" v-model="asesor.password" password-reveal >
-            </b-input>
-          </b-field>
-        </b-field>
-      </div>
     </section>
     <footer class="modal-card-foot">
         <button class="button" type="button" @click="$parent.close()">Cerrar</button>
-        <button class="button is-primary" @click="saveAsesor()">Guardar</button>
+        <button class="button is-primary" @click="guardarAsesor">Guardar</button>
     </footer>
   </div>
- 
 </template>
+
 <script>
 export default {
+	props: ['asesor'],
+  name: 'EditarModal',
+
   data () {
     return {
-    	asesor:{
-    		dni:'',
-    		nombre:'',
-    		telf:'',
-    		fecha_contrato: '',
-    		email:'',
-        username:'',
-        password:''
-    	}
+    	at: {}
     };
   },
-  methods: {
-    saveAsesor(){
-      this.$http.post('/api/usuarios', this.asesor).then( res => {
-        this.$emit('nuevoAsesor', res.data)
-        this.$parent.close()
-      })
-    }
+  methods:{
+  	guardarAsesor(){
+  		this.$http.patch('/api/usuarios/'+this.asesor.id+'?access_token='+this.at, this.asesor).then(res => {
+  			this.$emit('editado', res.data)
+  			this.$parent.close()
+        this.$toast.open({message:'asesor editado',type: 'is-success'})
+  		})
+  	}
+  },
+  created(){
+  	this.at = this.$auth.getToken().token
   }
 };
 </script>

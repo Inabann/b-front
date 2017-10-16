@@ -3,7 +3,7 @@
     <div class="column">
       <h1 class="has-text-centered title"><span class="has-text-info">Almacen</span></h1>
     </div>  
-		<b-table :data="stock" :mobile-cards="true" :paginated="true" per-page="15" default-sort-direction="desc"
+		<b-table :data="sinSaldo" :mobile-cards="true" :paginated="true" per-page="15" default-sort-direction="desc"
 			default-sort="cantidad">
 
       <template scope="props">
@@ -47,6 +47,13 @@ export default {
   	getStock(){
   		this.$http.post('/api/DetalleProductos/stock').then( res => this.stock = res.data)
   	}
+  },
+  computed:{
+    sinSaldo(){
+      return this.stock.filter(option => {
+        return !option._id.match('saldo')
+      })
+    }
   },
   created(){
   	this.getStock()

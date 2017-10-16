@@ -90,9 +90,6 @@
         </div>
       </div>
     </b-collapse>
-    <pre>
-    	{{venta}}
-    </pre>
 	</section>
 </template>
 

@@ -57,7 +57,7 @@ export default {
   },
   computed:{
     filteredDataProd(){
-      return this.productos.filter((option) => {
+      return this.filtrado.filter((option) => {
         return option.nombre
           .toString()
           .toLowerCase()
@@ -71,11 +71,17 @@ export default {
           .toLowerCase()
           .indexOf(this.plan.toLowerCase()) >= 0
       })
+    },
+    filtrado(){
+      return this.productos.filter(option => {
+        return !option.nombre.match('saldo') && !option.nombre.match('postpago') && !option.nombre.match('prepago')
+      })
     }
   },
   created: function(){
     this.getProductos()
     this.getPlanes()
+
   }
 }
 </script>

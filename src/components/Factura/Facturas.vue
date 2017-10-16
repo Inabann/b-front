@@ -28,7 +28,6 @@
           {{ props.row.total }}
         </b-table-column>
         <b-table-column label="Opciones">
-          <a class="button is-warning is-small">Editar</a>
           <a class="button is-danger is-small" @click="removeFactura(props.row)">Eliminar</a>
         </b-table-column>
       </template>

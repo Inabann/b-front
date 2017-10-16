@@ -34,28 +34,33 @@
           </span>
         </b-table-column>
         <b-table-column  label="Opciones" >
-          <a class="button is-warning is-small">Editar</a>
+          <a class="button is-warning is-small" @click="editarAsesor(props.row)">Editar</a>
           <a class="button is-danger is-small">Eliminar</a>
         </b-table-column>
       </template>
       <div slot="empty" class="has-text-centered">
         Cargando ...
       </div>
-    </b-table> 	
+    </b-table>
+    <b-modal :active.sync="isComponentModalActive2" has-modal-card>
+      <EditarModal :asesor="editAsesor" @editado="cambiar($event)"></EditarModal>
+    </b-modal> 	
   </div>
 </template>
 
 <script>
-
+import EditarModal from '@/components/Asesor/EditarModal'
 import ModalForm from '@/components/Asesor/ModalForm'
 
 export default {
  	name: 'Asesor',
-  components: { ModalForm },
+  components: { ModalForm, EditarModal },
   data(){
     return {
       asesores:[],
-      isComponentModalActive:false  
+      isComponentModalActive:false,
+      isComponentModalActive2:false,
+      editAsesor: {}  
     }
   },
   methods:{
@@ -64,6 +69,13 @@ export default {
     },
     getAsesores(){
       this.$http.get('/api/usuarios?access_token='+this.$auth.getToken().token).then(res => this.asesores= res.data)
+    },
+    editarAsesor(asesor){
+      this.editAsesor = asesor
+      this.isComponentModalActive2 = true
+    },
+    cambiar(asesor){
+      this.asesores[this.asesores.indexOf(this.editAsesor)] = asesor
     }
   },
   created(){

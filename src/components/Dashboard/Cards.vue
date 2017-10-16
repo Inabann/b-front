@@ -46,12 +46,12 @@ export default {
       this.$http.get('/api/Productos/saldo').then(res => this.saldo = res.data)
     },
     getNVentas(){
-    	this.$http.get('/api/Venta/count?filter[where][fecha_venta]='+this.hoy).then(res => this.cantidad_ventas = res.data.count)
+    	this.$http.get('/api/Venta/count?where=%7B%22fecha_venta%22%3A%22'+this.hoy+'%22%7D').then(res => this.cantidad_ventas = res.data.count)
     }
   },
   created(){
   	let d = new Date()
-  	d.setDate(d.getDate()-1)
+  	//d.setDate(d.getDate()-1)
   	this.hoy = d.toISOString().slice(0,10)
   	this.getSaldo()
   	this.getNVentas()
