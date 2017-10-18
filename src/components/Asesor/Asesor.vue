@@ -35,7 +35,7 @@
         </b-table-column>
         <b-table-column  label="Opciones" >
           <a class="button is-warning is-small" @click="editarAsesor(props.row)">Editar</a>
-          <a class="button is-danger is-small">Eliminar</a>
+          <a class="button is-danger is-small" @click="eliminarAsesor(props.row)">Eliminar</a>
         </b-table-column>
       </template>
       <div slot="empty" class="has-text-centered">
@@ -73,6 +73,21 @@ export default {
     editarAsesor(asesor){
       this.editAsesor = asesor
       this.isComponentModalActive2 = true
+    },
+    eliminarAsesor(asesor){
+      this.$dialog.confirm({
+        title: 'Eliminar Asesor',
+        message: '¿Esta seguro de <strong>eliminar</strong> a este Asesor de su registro? Esta accion no se puede deshacer.',
+        confirmText: 'Eliminar',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$toast.open({message:'Asesor eliminado',position: 'is-bottom',type: 'is-danger'})
+          this.$http.delete('/api/Asesors/'+asesor.id+'?access_token='+this.$auth.getToken().token).then( res => {
+          this.asesores.splice(this.asesores.indexOf(asesor), 1)
+          });  
+        }
+      })
     },
     cambiar(asesor){
       this.asesores[this.asesores.indexOf(this.editAsesor)] = asesor

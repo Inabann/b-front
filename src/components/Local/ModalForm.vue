@@ -1,7 +1,7 @@
 <template>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Formulario Nuevo Asesor</p>
+      <p class="modal-card-title">Formulario Nueva Tienda</p>
     </header>
     <section class="modal-card-body">
       <div class="box">

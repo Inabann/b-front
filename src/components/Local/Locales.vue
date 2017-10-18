@@ -31,7 +31,7 @@
 
 <script>
 
-import ModalForm from '@/components/Asesor/ModalForm'
+import ModalForm from '@/components/Local/ModalForm'
 
 export default {
  	name: 'Locales',
@@ -51,10 +51,20 @@ export default {
       this.$http.get('/api/usuarios?access_token='+this.$auth.getToken().token).then(res => this.asesores= res.data)
     },
     removeLocal(local){
-      this.$http.delete('/api/usuarios/'+local.id+'?access_token='+this.$auth.getToken().token).then( res => {
-        this.asesores.splice(this.asesores.indexOf(local), 1)
+      this.$dialog.confirm({
+        title: 'Eliminar Asesor',
+        message: '¿Esta seguro de <strong>eliminar</strong> a este Asesor de su registro? Esta accion no se puede deshacer.',
+        confirmText: 'Eliminar',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$toast.open({message:'Asesor eliminado',position: 'is-bottom',type: 'is-danger'})
+          this.$http.delete('/api/usuarios/'+local.id+'?access_token='+this.$auth.getToken().token).then( res => {
+          this.asesores.splice(this.asesores.indexOf(local), 1)
+          });  
+        }
       })
-    }
+    },
   },
   created(){
     this.getAsesores()
