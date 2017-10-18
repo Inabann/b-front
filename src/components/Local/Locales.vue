@@ -1,6 +1,14 @@
 <template>
   <div>
-    <button class="button is-info is-medium" @click="isComponentModalActive=true"><span>Nuevo Local</span></button>
+   <div class="columns">
+      <div class="column">
+        <h1 class="has-text-centered title"><span class="has-text-info">Tiendas</span></h1>
+      </div>  
+      <div class="column is-offset-4">
+        <button class="button is-warning is-medium" @click="isComponentModalActive=true"><span class="icon">
+        <i class="fa fa-plus"></i></span><span>Nueva Tienda</span></button>
+      </div> 
+   </div> 
     <b-modal :active.sync="isComponentModalActive" has-modal-card>
       <ModalForm @nuevoAsesor="addNuevoAsesor($event)"></ModalForm>
     </b-modal>

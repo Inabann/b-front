@@ -66,11 +66,21 @@ export default {
   	getVentas(){
   		this.$http.get('/api/Venta').then(res => this.ventas = res.data)
   	},
-  	removeVenta(venta){
-  		this.$http.delete('/api/Venta/'+venta.id).then( res => {
-  			this.ventas.splice(this.ventas.indexOf(venta),1)
-  		})
-  	}
+    removeVenta(venta){
+      this.$dialog.confirm({
+        title: 'Eliminar Venta',
+        message: '¿Esta seguro de <strong>eliminar</strong> esta Venta? Esta accion no se puede deshacer.',
+        confirmText: 'Eliminar',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$toast.open({message:'Venta eliminada',position: 'is-bottom',type: 'is-danger'})
+         this.$http.delete('/api/Venta/'+venta.id).then( res => {
+        this.ventas.splice(this.ventas.indexOf(venta),1)
+          });  
+        }
+      })
+    }
   },
   created(){
   	this.getVentas()

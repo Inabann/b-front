@@ -59,7 +59,7 @@ export default {
   	},
   	deletePack(pack){
       this.$dialog.confirm({
-        title: 'Eliminar Producto',
+        title: 'Eliminar Pack',
         message: '¿Esta seguro de <strong>eliminar</strong> este Pack? Esta accion no se puede deshacer.',
         confirmText: 'Eliminar',
         type: 'is-danger',
