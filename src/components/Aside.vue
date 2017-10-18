@@ -27,15 +27,17 @@
 	  <ul class="menu-list">
 	  	<li ><router-link :to="{ path: '/home/registro'} " replace :class="{ 'is-active': menu[5] }" @click.native="cambiar(5)"><span>Nueva</span></router-link></li>
 	  	<li ><router-link :to="{ path: '/home/ventas'} " replace :class="{ 'is-active': menu[6] }" @click.native="cambiar(6)"><span> Ventas</span></router-link></li>
+	  	<li ><router-link :to="{ path: '/home/pagos'} " replace :class="{ 'is-active': menu[11] }" @click.native="cambiar(11)"><span> Pagos/Recargas</span></router-link></li>
 			<li ><router-link :to="{ path: '/home/plan'} " replace :class="{ 'is-active': menu[7] }" @click.native="cambiar(7)"><span> Plan</span></router-link></li>
 			
 	  </ul>
 
 	  <p class="menu-label">
-	  	<span>Asesores</span>
+	  	<span>Administrar</span>
 	  </p>
 	  <ul class="menu-list">
-			<li ><router-link :to="{ path: '/home/asesores'} " replace :class="{ 'is-active': menu[9] }" @click.native="cambiar(9)"><span>Lista</span></router-link></li>
+			<li ><router-link :to="{ path: '/home/asesores'} " replace :class="{ 'is-active': menu[9] }" @click.native="cambiar(9)"><span>Asesores</span></router-link></li>
+			<li ><router-link :to="{ path: '/home/locales'} " replace :class="{ 'is-active': menu[10] }" @click.native="cambiar(10)"><span>Locales</span></router-link></li>
 	  </ul>
 
 	</aside>

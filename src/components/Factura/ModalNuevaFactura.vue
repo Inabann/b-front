@@ -10,6 +10,12 @@
       </a>
     </header>
     <section class="modal-card-body">
+      <b-field label="Tienda" required>
+        <b-select placeholder="Seleccione una" v-model="local">
+          <option v-for="option in locales" :value="option" :key="option.username"> {{ option.username }}
+          </option>
+        </b-select>
+      </b-field>
     	<b-field grouped>
         <b-field label="Numero de serie">
            <b-input type="text" v-model="factura.codigo" placeholder="Numero de serie" required></b-input>
@@ -108,7 +114,9 @@ export default {
       agregarProducto: {
         tipo: 'equipo'
       },
-      opciones: false
+      opciones: false,
+      locales: [],
+      local: ''
     };
   },
   methods: {
@@ -116,12 +124,13 @@ export default {
   		this.$http.get('/api/Productos').then(res => this.productos = res.data)
   	},
   	addProducto(){
-  		this.productosAgregados.push({serie: this.num_serie, productoId:this.productoSelec.nombre})
+  		this.productosAgregados.push({serie: this.num_serie, productoId:this.productoSelec.nombre, usuarioId: this.usuarioId})
   	},
   	guardar(){
+      this.factura.usuarioId = this.local.id
   		this.$http.post('/api/Facturas', this.factura).then(res => {
   			this.productosAgregados.forEach( item => {
-  				this.$http.post('/api/DetalleProductos', {serie: item.serie, productoId: item.productoId, facturaId: res.data.codigo})
+  				this.$http.post('/api/DetalleProductos', {serie: item.serie, productoId: item.productoId, facturaId: res.data.codigo, usuarioId: this.local.id})
   			})
         this.$emit('facturaAgregada', res.data)
   			this.$parent.close()
@@ -148,6 +157,9 @@ export default {
         this.producto = res.data.nombre
         this.opciones = false
       })
+    },
+    getLocales(){
+      this.$http.get('/api/usuarios?access_token='+this.$auth.getToken().token).then(res => this.locales = res.data)
     }
   },
   computed: {
@@ -179,6 +191,7 @@ export default {
 		this.hoy = today //maximo para escoger fecha
 		this.factura.fecha = today //por defecto la fecha sera hoy
 		this.getProductos()
+    this.getLocales()
   }
 };
 </script>

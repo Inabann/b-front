@@ -1,7 +1,7 @@
 <template>
 	<div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Nuevo Pack</p>
+      <p class="modal-card-title">Ventas del {{fecha}}</p>
         
     </header>
     <section class="modal-card-body">
@@ -68,14 +68,13 @@ export default {
   		datos.usuarioId = this.usuarioId
   		this.$http.post('/api/Venta/VentaxAsesor',{datos: datos}).then(res => {
   			this.ventas = res.data
-  			console.log(this.ventas)
   		})
   	}
   },
   computed:{
   	ventasFiltradas(){
   		return this.ventas.filter(venta => {
-  			return venta.usuarioId.match(this.usuarioId)
+  			return venta.asesorId.match(this.usuarioId)
   		})
   	}
   },

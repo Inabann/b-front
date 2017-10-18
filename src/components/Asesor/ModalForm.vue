@@ -19,26 +19,10 @@
           <b-input type="text" v-model="asesor.telf" placeholder="Teléfono" >
           </b-input>
         </b-field>
-        <b-field label="Email">
-          <b-input type="email" v-model="asesor.email" placeholder="correo electronico" >
-          </b-input>
-        </b-field>
       </b-field>
       <b-field label="Fecha de Contrato">
         <b-input type="date" v-model="asesor.fecha_contrato" placeholder="Fecha de Contrato"></b-input>
       </b-field>
-      <div class="box">
-        <b-field grouped>
-          <b-field label="Nombre de usuario" expanded>
-            <b-input type="text" v-model="asesor.username" >
-            </b-input>
-          </b-field>
-          <b-field label="Contraseña" expanded>
-            <b-input type="password" v-model="asesor.password" password-reveal >
-            </b-input>
-          </b-field>
-        </b-field>
-      </div>
     </section>
     <footer class="modal-card-foot">
         <button class="button" type="button" @click="$parent.close()">Cerrar</button>
@@ -64,7 +48,7 @@ export default {
   },
   methods: {
     saveAsesor(){
-      this.$http.post('/api/usuarios', this.asesor).then( res => {
+      this.$http.post('/api/Asesors', this.asesor).then( res => {
         this.$emit('nuevoAsesor', res.data)
         this.$parent.close()
       })

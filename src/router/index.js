@@ -11,6 +11,8 @@ import Producto from '@/components/Producto/Producto'
 import Ventas from '@/components/Venta/Ventas'
 import Registro from '@/components/Venta/Registro'
 import Packs from '@/components/Pack/Packs'
+import Locales from '@/components/Local/Locales'
+import Pagos from '@/components/Pago/Pagos'
 
 Vue.use(Router)
 
@@ -73,6 +75,16 @@ export default new Router({
         {
           path: 'packs',
           component: Packs,
+          meta: { forAuth : true}
+        },
+        {
+          path: 'locales',
+          component: Locales,
+          meta: { forAuth : true}
+        },
+        {
+          path: 'pagos',
+          component: Pagos,
           meta: { forAuth : true}
         }
       ]

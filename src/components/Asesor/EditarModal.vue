@@ -31,10 +31,6 @@
           <b-input type="text" v-model="asesor.telf" placeholder="Teléfono" >
           </b-input>
         </b-field>
-        <b-field label="Email">
-          <b-input type="email" v-model="asesor.email" placeholder="correo electronico" >
-          </b-input>
-        </b-field>
       </b-field>
     </section>
     <footer class="modal-card-foot">
@@ -48,7 +44,6 @@
 export default {
 	props: ['asesor'],
   name: 'EditarModal',
-
   data () {
     return {
     	at: {}
@@ -56,15 +51,12 @@ export default {
   },
   methods:{
   	guardarAsesor(){
-  		this.$http.patch('/api/usuarios/'+this.asesor.id+'?access_token='+this.at, this.asesor).then(res => {
+  		this.$http.patch('/api/Asesors/'+this.asesor.id, this.asesor).then(res => {
   			this.$emit('editado', res.data)
   			this.$parent.close()
         this.$toast.open({message:'asesor editado',type: 'is-success'})
   		})
   	}
-  },
-  created(){
-  	this.at = this.$auth.getToken().token
   }
 };
 </script>

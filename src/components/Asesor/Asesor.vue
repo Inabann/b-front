@@ -17,16 +17,8 @@
             {{ props.row.telf }}
           </div>
         </b-table-column>
-        <b-table-column field="email" label="Email">
-          <div v-if="props.row.email">
-            {{ props.row.email }}
-          </div>
-        </b-table-column>
         <b-table-column field="fecha_contrato" label="Fecha Contrato" sortable>
           {{ props.row.fecha_contrato | moment("add","1 days","YYYY / MM / DD") }}
-        </b-table-column>
-        <b-table-column field="username" label="Usuario" sortable>
-          {{ props.row.username }}
         </b-table-column>
         <b-table-column field="activo" label="Estado" sortable>
           <span :class="props.row.activo ? 'icon has-text-info': 'icon has-text-danger'">
@@ -68,7 +60,7 @@ export default {
       this.asesores.push(asesor)
     },
     getAsesores(){
-      this.$http.get('/api/usuarios?access_token='+this.$auth.getToken().token).then(res => this.asesores= res.data)
+      this.$http.get('/api/Asesors').then(res => this.asesores= res.data)
     },
     editarAsesor(asesor){
       this.editAsesor = asesor

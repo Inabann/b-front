@@ -82,6 +82,11 @@
 				  		<span class="title is-4" >S/. {{ precioEquipo }}</span>
 				    </b-field>
 			    </b-field>
+          <b-field grouped>
+            <b-field label="Asesor" >
+              <b-autocomplete v-model="asesor" :data="filteredDataProd3" field="nombre" @select="option => asesorSelec = option"></b-autocomplete>
+            </b-field>
+          </b-field>
 			    <a class="button is-success" @click="saveVenta">
 						<span class="icon">
 							<i class="fa fa-check"></i>
@@ -115,6 +120,9 @@ export default {
     	isOpen: false,
     	isOpen2: true,
     	//autocomplete
+      asesores: [],
+      asesor: '',
+      asesorSelec: null,
     	productos: [],
       producto: '',
       productoSelec: null,
@@ -132,7 +140,7 @@ export default {
   		this.venta.plan = this.planSelec.nombre
   		this.venta.descuento = this.planSelec.descuento
   		this.venta.precio = this.precioEquipo
-      this.venta.usuarioId = this.$auth.getToken().userId
+      this.venta.asesorId = this.asesorSelec.id
   		let d = new Date()
   		d.setDate(d.getDate()-1)
   		this.venta.fecha_venta = d.toISOString().slice(0,10)
@@ -158,7 +166,10 @@ export default {
     },
     getSaldo(){
     	this.$http.get('/api/Productos/saldo').then(res => this.saldo = res.data)
-    }
+    },
+    getPlanes(){
+      this.$http.get('/api/Asesors').then(res => this.asesores = res.data)
+    },
   },
   computed:{
     filteredDataProd(){
@@ -175,6 +186,14 @@ export default {
           .toString()
           .toLowerCase()
           .indexOf(this.plan.toLowerCase()) >= 0
+      })
+    },
+    filteredDataProd3(){
+      return this.asesores.filter((option) => {
+        return option.nombre
+          .toString()
+          .toLowerCase()
+          .indexOf(this.asesor.toLowerCase()) >= 0
       })
     },
     precioEquipo(){

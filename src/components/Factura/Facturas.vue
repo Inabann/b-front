@@ -14,10 +14,11 @@
     </b-modal>
 		<b-table
       :data="facturas"
-      detailed
-      @details-open="(row, index) => detalles(row)">
-
+      detailed>
       <template scope="props">
+        <b-table-column label="Local" width="40"  numeric>
+          {{ props.row.usuario.username | uppercase}}
+        </b-table-column>
         <b-table-column label="Codigo" width="40"  numeric>
           {{ props.row.codigo | uppercase}}
         </b-table-column>
@@ -36,8 +37,13 @@
         <article class="media">
           <div class="media-content">
             <div class="content">
-              
-              {{ detalleFactura }}
+              <!-- aqui esta el v-for -->
+              <!-- props.row.detalleProductos es el array q contiene LOS productos 
+                  no te olvides cuando una factura agrega SALDO // la estructura de producto cambia
+              -->
+              <div v-for="producto in props.row.detalleProductos">
+                {{ producto.productoId }}
+              </div>
             </div>
           </div>
         </article>
@@ -63,33 +69,29 @@ export default {
   },
   methods: {
   	getFacturas(){
-  		this.$http.get('/api/Facturas').then(res => this.facturas = res.data)
+  		this.$http.get('/api/Facturas?filter=%7B%22include%22%20%3A%20%5B%22usuario%22%2C%22detalleProductos%22%5D%7D').then(res => this.facturas = res.data)
   	},
-  	detalles(row){
-  		this.$http.get('/api/Facturas/'+row.codigo+'/detalleProductos').then( res => this.detalleFactura = res.data)
-  	},
-
     removeFactura(factura){
-            this.$dialog.confirm({
-            title: 'Eliminar Factura',
-            message: '¿Esta seguro de <strong>eliminar</strong> esta Factura? Esta accion no se puede deshacer.',
-            confirmText: 'Eliminar',
-            type: 'is-danger',
-            hasIcon: true,
-            onConfirm: () => {
-                this.$toast.open({message:'Factura eliminada',position: 'is-bottom',type: 'is-danger'})
-                this.$http.delete('/api/Facturas/'+factura.codigo+'/detalleProductos').then(res => {
-                this.$http.delete('/api/Facturas/'+factura.codigo).then(resp => {
-                this.facturas.splice(this.facturas.indexOf(factura), 1)
-                console.log('factura y productos eliminados')
-                })
-              });
-            }
-          })
+      this.$dialog.confirm({
+        title: 'Eliminar Factura',
+        message: '¿Esta seguro de <strong>eliminar</strong> esta Factura? Esta accion no se puede deshacer.',
+        confirmText: 'Eliminar',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.$toast.open({message:'Factura eliminada',position: 'is-bottom',type: 'is-danger'})
+          this.$http.delete('/api/Facturas/'+factura.codigo+'/detalleProductos').then(res => {
+            this.$http.delete('/api/Facturas/'+factura.codigo).then(resp => {
+              this.facturas.splice(this.facturas.indexOf(factura), 1)
+            })
+          });
+        }
+      })
     },
-
     nuevaFactura(factura){
-      this.facturas.unshift(factura)
+      this.get('/api/Facturas/'+this.factura.id+'?filter=%7B%22include%22%20%3A%20%22detalleProductos%22%7D').then(res => {
+        this.facturas.unshift(res.data)
+      })
     }
   },
   created(){
