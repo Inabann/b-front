@@ -59,6 +59,7 @@ export default {
   	},
   	addPago(pago){
   		this.pagos.unshift(pago)
+      
   	}
   	// deletePago(pago){
   	// 	this.$http.patch('/api/usuarios/'+this.$auth.getToken().userId+'?access_token='+ this.$auth.getToken().token,{saldo: this.saldo.total + pago.monto}).then(res2=> {

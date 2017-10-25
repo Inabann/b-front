@@ -160,7 +160,8 @@ export default {
   		this.$http.post('/api/Venta', this.venta).then(res => {
   			if(this.venta.sim_chip) this.vendido(this.venta.sim_chip)
         if(this.venta.sim_equipo) this.vendido(this.venta.sim_equipo)
-  			
+
+  			this.$toast.open({message:'Venta exitosa',type: 'is-success'})
   			this.$http.patch('/api/usuarios/'+this.localSelec+'?access_token='+ this.$auth.getToken().token,{total: this.saldo - Number(this.venta.descuento)}).then(res2=> {
   				this.venta = {}
           this.planSelec = null

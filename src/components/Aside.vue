@@ -10,14 +10,14 @@
 			</ul>
 	  </ul>
 	  <p class="menu-label">
-	    <span >Inventario</span>
+	    <span >Existencias</span>
 	  </p>
 	  <ul class="menu-list">
 			<ul class="menu-list">
-				<li ><router-link :to="{ path: '/home/facturas'} " replace :class="{ 'is-active': menu[2] }" @click.native="cambiar(2)"><span> Facturas</span></router-link></li>
-				<li ><router-link :to="{ path: '/home/stock'} " replace :class="{ 'is-active': menu[3] }" @click.native="cambiar(3)"><span> Stock</span></router-link></li>
+				<li ><router-link :to="{ path: '/home/facturas'} " replace :class="{ 'is-active': menu[2] }" @click.native="cambiar(2)"><span> Compras/Facturas</span></router-link></li>
+				<li ><router-link :to="{ path: '/home/stock'} " replace :class="{ 'is-active': menu[3] }" @click.native="cambiar(3)"><span> Stock Disponible</span></router-link></li>
 				<li ><router-link :to="{ path: '/home/packs'} " replace :class="{ 'is-active': menu[4] }" @click.native="cambiar(4)"><span> Packs</span></router-link></li>
-				<li ><router-link :to="{ path: '/home/producto'} " replace :class="{ 'is-active': menu[8] }" @click.native="cambiar(8)"><span> Producto</span></router-link></li>
+				<li ><router-link :to="{ path: '/home/producto'} " replace :class="{ 'is-active': menu[8] }" @click.native="cambiar(8)"><span> Productos</span></router-link></li>
 			</ul>
 
 	  </ul>
@@ -25,10 +25,10 @@
 	    <span>VENTAS</span>
 	  </p>
 	  <ul class="menu-list">
-	  	<li ><router-link :to="{ path: '/home/registro'} " replace :class="{ 'is-active': menu[5] }" @click.native="cambiar(5)"><span>Nueva</span></router-link></li>
-	  	<li ><router-link :to="{ path: '/home/ventas'} " replace :class="{ 'is-active': menu[6] }" @click.native="cambiar(6)"><span> Ventas</span></router-link></li>
+	  	<li ><router-link :to="{ path: '/home/registro'} " replace :class="{ 'is-active': menu[5] }" @click.native="cambiar(5)"><span>Registrar Venta</span></router-link></li>
+	  	<li ><router-link :to="{ path: '/home/ventas'} " replace :class="{ 'is-active': menu[6] }" @click.native="cambiar(6)"><span> Numero de Ventas</span></router-link></li>
 	  	<li ><router-link :to="{ path: '/home/pagos'} " replace :class="{ 'is-active': menu[11] }" @click.native="cambiar(11)"><span> Pagos/Recargas</span></router-link></li>
-			<li ><router-link :to="{ path: '/home/plan'} " replace :class="{ 'is-active': menu[7] }" @click.native="cambiar(7)"><span> Plan</span></router-link></li>
+			<li ><router-link :to="{ path: '/home/plan'} " replace :class="{ 'is-active': menu[7] }" @click.native="cambiar(7)"><span> Planes</span></router-link></li>
 			
 	  </ul>
 

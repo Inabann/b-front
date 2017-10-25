@@ -54,7 +54,7 @@ export default {
   		this.$http.patch('/api/Asesors/'+this.asesor.id, this.asesor).then(res => {
   			this.$emit('editado', res.data)
   			this.$parent.close()
-        this.$toast.open({message:'asesor editado',type: 'is-success'})
+        this.$toast.open({message:'datos modificados con exito!',type: 'is-success'})
   		})
   	}
   }

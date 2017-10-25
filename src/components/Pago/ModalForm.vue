@@ -51,7 +51,7 @@ export default {
         this.$http.post('/api/Pagos', this.pago).then(res => {
           this.$emit('newPago', res.data)
           this.$parent.close()
-          this.$toast.open({message:'Pack guardado',type: 'is-success'})
+          this.$toast.open({message:'Transaccion exitosa',type: 'is-success'})
         })
       }) 
     },

@@ -47,6 +47,10 @@ export default {
   methods:{
     addNuevoAsesor(asesor){
       this.asesores.push(asesor)
+      this.$toast.open({
+           message: 'Apertura de local existosa',
+           type: 'is-success'
+           })
     },
     getAsesores(){
       this.$http.get('/api/usuarios?access_token='+this.$auth.getToken().token).then(res => this.asesores= res.data)
@@ -72,6 +76,7 @@ export default {
     },
     usuarioEdit(local){
       this.sinAdmin[this.sinAdmin.indexOf(this.editlocal)] = local
+      this.$toast.open({message:'datos modificados con exito!',type: 'is-success'})
     }
   },
   computed: {

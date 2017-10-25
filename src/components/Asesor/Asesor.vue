@@ -66,6 +66,10 @@ export default {
   methods:{
     addNuevoAsesor(asesor){
       this.asesores.push(asesor)
+      this.$toast.open({
+           message: 'Asesor agregado con exito!',
+           type: 'is-success'
+           })
     },
     getAsesores(){
       this.$http.get('/api/Asesors').then(res => this.asesores= res.data)
