@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Cards></Cards>
+    <div v-if="this.$auth.getToken().admin == 'true'">
+      <CardsAdmin></CardsAdmin>
+    </div>
+    <div v-else>
+      <Cards></Cards>
+    </div>
     <div class="columns">
       <div class="column">
         <TotalporMes></TotalporMes>
@@ -16,6 +21,7 @@
 
 <script>
 import Cards from '@/components/Dashboard/Cards'
+import CardsAdmin from '@/components/Dashboard/CardsAdmin'
 import TotalporMes from '@/components/Dashboard/TotalporMes'
 import CantidadporMes from '@/components/Dashboard/CantidadporMes'
 import VentasxAsesor from '@/components/Dashboard/VentasxAsesor'
@@ -23,7 +29,7 @@ import VentasxAsesor from '@/components/Dashboard/VentasxAsesor'
 export default {
 
   name: 'Dashboard',
-  components: { Cards, TotalporMes, CantidadporMes, VentasxAsesor },
+  components: { Cards, TotalporMes, CantidadporMes, VentasxAsesor, CardsAdmin },
   data () {
     return {
 

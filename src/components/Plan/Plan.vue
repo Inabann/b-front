@@ -22,7 +22,7 @@
           </div>
           <div class="column is-3">
             <b-field label="Descuento">
-              <b-input type="number" v-model="plan.descuento" placeholder="S/." icon="money" required />
+              <b-input type="number" min="0" step=".10" v-model="plan.descuento" placeholder="S/." icon="money" required />
             </b-field>                    
           </div>
 

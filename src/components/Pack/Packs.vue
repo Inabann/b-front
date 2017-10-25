@@ -23,7 +23,9 @@
           {{ props.row.equipo }}
         </b-table-column>
         <b-table-column field="plan" label="Plan" sortable>
-          {{ props.row.plan.nombre }}
+          <div v-if="props.row.plan">
+            {{ props.row.plan.nombre }}
+          </div>
         </b-table-column>
         <b-table-column  label="Opciones" >
           <a class="button is-danger is-small" @click="deletePack(props.row)" >Eliminar</a>
@@ -55,7 +57,9 @@ export default {
   		this.packs.unshift(pack)
   	},
   	getPacks(){
-  		this.$http.get('/api/Packs?filter[include]=plan').then(res => this.packs = res.data)
+  		this.$http.get('/api/Packs?filter[include]=plan').then(res => {
+        this.packs = res.data
+      })
   	},
   	deletePack(pack){
       this.$dialog.confirm({

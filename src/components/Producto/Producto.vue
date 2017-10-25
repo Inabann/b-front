@@ -69,7 +69,7 @@ export default {
           this.$toast.open({message:'Producto eliminado',position: 'is-bottom',type: 'is-danger'})
           let id = producto.nombre
           this.$http.delete('/api/Productos/'+id).then((res) => {
-            this.productos.splice(vm.productos.indexOf(producto), 1)
+            this.productos.splice(this.productos.indexOf(producto), 1)
           });  
         }
       })
@@ -77,9 +77,14 @@ export default {
   },
   computed: {
     searchProducto: function(){
-      return this.productos.filter((producto) => {
-        return producto.nombre.match(this.pfilter.toLowerCase());
+      return this.sinSaldo.filter((producto) => {
+        return producto.nombre.match(this.pfilter);
       });
+    },
+    sinSaldo(){
+      return this.productos.filter(option => {
+        return !option.nombre.match('saldo')
+      })
     }
   },
   created: function(){

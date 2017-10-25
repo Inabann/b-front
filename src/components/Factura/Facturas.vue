@@ -16,17 +16,20 @@
       :data="facturas"
       detailed>
       <template scope="props">
-        <b-table-column label="Local" width="40"  numeric>
-          {{ props.row.usuario.username | uppercase}}
+        <b-table-column label="Local" width="40" field="usuario" sortable numeric>
+          <div v-if="props.row.usuario">
+            {{ props.row.usuario.username | uppercase}}
+          </div>
+          
         </b-table-column>
-        <b-table-column label="Codigo" width="40"  numeric>
+        <b-table-column label="Codigo" width="40" field="codigo" sortable numeric>
           {{ props.row.codigo | uppercase}}
         </b-table-column>
-        <b-table-column label="Fecha de registro" centered>
+        <b-table-column label="Fecha de registro" centered field="fecha" sortable>
           {{ props.row.fecha | moment("add","1 days","YYYY / MM / DD")}}
         </b-table-column>
         <b-table-column label="Total">
-          {{ props.row.total }}
+          <strong>S/.</strong>{{ props.row.total }}
         </b-table-column>
         <b-table-column label="Opciones">
           <a class="button is-danger is-small" @click="removeFactura(props.row)">Eliminar</a>
@@ -37,12 +40,23 @@
         <article class="media">
           <div class="media-content">
             <div class="content">
-              <!-- aqui esta el v-for -->
-              <!-- props.row.detalleProductos es el array q contiene LOS productos 
-                  no te olvides cuando una factura agrega SALDO // la estructura de producto cambia
-              -->
-              <div v-for="producto in props.row.detalleProductos">
-                {{ producto.productoId }}
+              <div class="field is-grouped is-grouped-multiline">
+                <div class="control" v-for="producto in props.row.detalleProductos">
+                  <div class="tags has-addons">
+                    <span class="tag ">{{producto.productoId}}</span>
+                    <span class="tag is-info" v-if="producto.saldo">
+                      {{producto.saldo}}
+                    </span>
+                    <span class="tag is-info" v-else>
+                      {{producto.serie}}
+                    </span>
+                    <span class="tag" v-if="producto.vendido">
+                      <span class="icon has-text-success">
+                        <i class="fa fa-check-square"></i>
+                      </span>
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -71,6 +85,9 @@ export default {
   	getFacturas(){
   		this.$http.get('/api/Facturas?filter=%7B%22include%22%20%3A%20%5B%22usuario%22%2C%22detalleProductos%22%5D%7D').then(res => this.facturas = res.data)
   	},
+    getFacturasLocal(){
+      this.$http.get('/api/Facturas?filter=%7B%22include%22%20%3A%20%5B%22usuario%22%2C%22detalleProductos%22%5D%2C%22where%22%3A%7B%22usuarioId%22%3A%22'+this.$auth.getToken().userId+'%22%7D%7D').then(res => this.facturas = res.data)
+    },
     removeFactura(factura){
       this.$dialog.confirm({
         title: 'Eliminar Factura',
@@ -89,13 +106,18 @@ export default {
       })
     },
     nuevaFactura(factura){
-      this.get('/api/Facturas/'+this.factura.id+'?filter=%7B%22include%22%20%3A%20%22detalleProductos%22%7D').then(res => {
+      this.$http.get('/api/Facturas/'+factura.codigo+'?filter=%7B%22include%22%20%3A%20%5B%22usuario%22%2C%22detalleProductos%22%5D%7D').then(res => {
         this.facturas.unshift(res.data)
       })
     }
   },
   created(){
-  	this.getFacturas()
+    if(this.$auth.getToken().admin == 'true'){
+      this.getFacturas()
+    } else {
+      this.getFacturasLocal()
+    }
+  	
   }
 };
 </script>

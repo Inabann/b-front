@@ -46,7 +46,8 @@ export default {
   },
   methods:{ 
     savePago(){
-      this.$http.patch('/api/Productos/saldo',{total: this.saldo.total - this.pago.monto}).then(res2=> {
+      let n = this.saldo - Number(this.pago.monto)
+      this.$http.patch('/api/Productos/saldo',{total: n}).then(res2=> {
         this.$http.post('/api/Pagos', this.pago).then(res => {
           this.$emit('newPago', res.data)
           this.$parent.close()
@@ -55,11 +56,14 @@ export default {
       }) 
     },
     getSaldo(){
-      this.$http.get('/api/Productos/saldo').then(res => this.saldo = res.data.total)
+      this.$http.get('/api/usuarios/'+this.$auth.getToken().userId+'?access_token='+ this.$auth.getToken().token).then(res => {
+        this.saldo = res.data.saldo
+      })
     }
   },
   created: function(){
     this.getSaldo()
+
   }
 }
 </script>

@@ -26,6 +26,7 @@
 </template>
 <script>
 export default {
+  props:['edit'],
   data () {
     return {
     	asesor:{
@@ -36,10 +37,15 @@ export default {
   },
   methods: {
     saveAsesor(){
-      this.$http.post('/api/usuarios', this.asesor).then( res => {
-        this.$emit('nuevoAsesor', res.data)
+      this.$http.patch('/api/usuarios/'+this.edit.id+'?access_token='+this.$auth.getToken().token, this.asesor).then( res => {
+        this.$emit('UsuarioEdit', res.data)
         this.$parent.close()
       })
+    }
+  },
+  created(){
+    if(this.edit){
+      this.asesor.username = this.edit.username
     }
   }
 };

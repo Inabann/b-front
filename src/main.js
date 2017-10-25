@@ -44,7 +44,8 @@ router.beforeEach(
 			next()
 		}
 		if(to.matched.some(record => record.meta.forAdmin)){
-			if(!Vue.auth.isAdmin()){
+			let boolean = (Vue.auth.getToken().admin == 'true')
+			if(!boolean){
 				if(to.path !== '/home/dashboard'){
 					next('/home/dashboard')
 				}

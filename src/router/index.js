@@ -40,27 +40,27 @@ export default new Router({
         {
           path: 'dashboard',
           component: Dashboard,
-          meta: { forAuth : true}
+          meta: { forAuth : true, forAdmin : false}
         },
         {
           path: 'plan',
           component: Plan,
-          meta: { forAuth : true}
+          meta: { forAuth : true, forAdmin : false}
         },
         {
           path: 'producto',
           component: Producto,
-          meta: { forAuth : true}
+          meta: { forAuth : true, forAdmin : false}
         },
         {
           path: 'facturas',
           component: Facturas,
-          meta: { forAuth : true}
+          meta: { forAuth : true, forAdmin : false}
         },
         {
           path: 'stock',
           component: Stock,
-          meta: { forAuth : true}
+          meta: { forAuth : true, forAdmin : false}
         },
         {
           path: 'ventas',
@@ -80,7 +80,7 @@ export default new Router({
         {
           path: 'locales',
           component: Locales,
-          meta: { forAuth : true}
+          meta: { forAdmin : true}
         },
         {
           path: 'pagos',

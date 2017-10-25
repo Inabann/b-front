@@ -17,7 +17,7 @@
         </b-select>
       </b-field>
     	<b-field grouped>
-        <b-field label="Numero de serie">
+        <b-field label="Numero de serie" required>
            <b-input type="text" v-model="factura.codigo" placeholder="Numero de serie" required></b-input>
         </b-field>
 
@@ -43,18 +43,23 @@
             </span></button>
           </b-field>
         </b-field>
-        <b-field label="Serie/Codigo" expanded v-if="!recarga">
-            <b-field>
-                <b-input type="number" v-model="num_serie" placeholder="serie/codigo" required></b-input>
-                <button class="button is-success" @click="addProducto">agregar</button>
-            </b-field>
-        </b-field>
+        
         <b-field label="Saldo" expanded v-if="recarga">
             <b-field>
               <b-input type="number" v-model="num_serie" placeholder="cantidad" required></b-input>
             </b-field>
         </b-field>
     	</b-field>
+      <b-field grouped v-if="!recarga">
+        <b-field label="Serie/Codigo" expanded >
+          <b-input type="string" v-model="num_serie" placeholder="serie/codigo" required></b-input>
+        </b-field>
+        <b-field label="Siguientes">
+          <b-input type="number" v-model="hasta" ></b-input>
+        </b-field>
+      </b-field>
+        <button class="button is-success" @click="addProducto" v-if="!recarga">agregar</button>
+
       <!-- tipo del producto nuevo -->
       <div class="block" v-if="!lock">
         <b-radio v-model="agregarProducto.tipo"
@@ -67,22 +72,20 @@
         </b-radio>
       </div>
       <!-- end -->
-	    <table class="table is-narrow is-fullwidth" v-if="!recarga">
-	    	<thead>
-	    		<tr>
-	    			<th>Producto</th>
-	    			<th>Serie/Codigo</th>
-	    			<th>Opciones</th>
-	    		</tr>
-	    	</thead>
-	    	<tbody>
-	    		<tr v-for="item in productosAgregados">
-	    			<td>{{item.productoId}}</td>
-	    			<td>{{item.serie}}</td>
-	    			<td><a class="button is-danger is-small" @click="eliminar(item)">eliminar</a></td>
-	    		</tr>
-	    	</tbody>
-	    </table>
+      <b-table :data="productosAgregados" :mobile-cards="true" :paginated="true" per-page="7" v-if="!recarga">
+        <template scope="props">
+          <b-table-column field="productoId" label="Producto" sortable>
+                {{ props.row.productoId }}
+            </b-table-column>
+            <b-table-column field="serie" label="Serie/Codigo" sortable>
+                {{ props.row.serie }}
+            </b-table-column>
+
+            <b-table-column  label="opciones">
+                <a class="button is-danger is-small" @click="eliminar(props.row)">eliminar</a>
+            </b-table-column>
+        </template>
+      </b-table>
     </section>
     <footer class="modal-card-foot">
         <button class="button" type="button" @click="$parent.close()">Cerrar</button>
@@ -93,6 +96,8 @@
 </template>
 
 <script>
+import BigInt from 'big-integer'
+
 export default {
 
   name: 'ModalNuevaFactura',
@@ -102,7 +107,8 @@ export default {
     	factura: {
     		codigo: '',
     		fecha: '',
-    		total: ''
+    		total: '',
+        usuarioId: ''
     	},
     	num_serie: '',
     	productosAgregados: [],
@@ -116,7 +122,9 @@ export default {
       },
       opciones: false,
       locales: [],
-      local: ''
+      local: '',
+      hasta: 0,
+      saldo: {}
     };
   },
   methods: {
@@ -124,7 +132,15 @@ export default {
   		this.$http.get('/api/Productos').then(res => this.productos = res.data)
   	},
   	addProducto(){
-  		this.productosAgregados.push({serie: this.num_serie, productoId:this.productoSelec.nombre, usuarioId: this.usuarioId})
+      if(this.hasta == 0){
+        this.productosAgregados.push({serie: this.num_serie, productoId:this.productoSelec.nombre, usuarioId: this.usuarioId})
+      } else {
+        for (let i = 0; i <= this.hasta; i++) { 
+          let n = BigInt(this.num_serie).add(i).toString()
+          this.productosAgregados.push({serie: n, productoId:this.productoSelec.nombre, usuarioId: this.usuarioId})
+        }
+      }
+  		
   	},
   	guardar(){
       this.factura.usuarioId = this.local.id
@@ -137,13 +153,12 @@ export default {
   		})
   	},
     addSaldo(){
+      this.factura.usuarioId = this.local.id
       this.$http.post('/api/Facturas', this.factura).then(res => {
-        this.$http.post('/api/DetalleProductos', {serie: this.factura.codigo, productoId: 'saldo', facturaId: res.data.codigo, saldo: this.num_serie}).then(resp => {
-          this.$http.get('/api/Productos/saldo').then(respo => {
-            this.$http.put('/api/Productos/saldo', {total: respo.data.total + Number(this.num_serie), tipo: 'saldo'}).then(response => {
-              this.$emit('facturaAgregada', res.data)
-              this.$parent.close()
-            })
+        this.$http.post('/api/DetalleProductos', {serie: res.data.codigo, productoId: 'saldo', facturaId: res.data.codigo, saldo: this.num_serie, usuarioId: this.local.id}).then(resp => {
+          this.$http.patch('/api/Productos/saldo', {total: this.saldo.total + Number(this.num_serie)}).then(response => {
+            this.$emit('facturaAgregada', res.data)
+            this.$parent.close()
           })
         })   
       })
@@ -160,7 +175,10 @@ export default {
     },
     getLocales(){
       this.$http.get('/api/usuarios?access_token='+this.$auth.getToken().token).then(res => this.locales = res.data)
-    }
+    },
+    getSaldo(){
+      this.$http.get('/api/Productos/saldo').then(res => this.saldo = res.data)
+    },
   },
   computed: {
   	filteredDataProd(){
@@ -192,6 +210,7 @@ export default {
 		this.factura.fecha = today //por defecto la fecha sera hoy
 		this.getProductos()
     this.getLocales()
+    this.getSaldo()
   }
 };
 </script>

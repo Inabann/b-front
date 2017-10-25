@@ -37,7 +37,7 @@
 	  </p>
 	  <ul class="menu-list">
 			<li ><router-link :to="{ path: '/home/asesores'} " replace :class="{ 'is-active': menu[9] }" @click.native="cambiar(9)"><span>Asesores</span></router-link></li>
-			<li ><router-link :to="{ path: '/home/locales'} " replace :class="{ 'is-active': menu[10] }" @click.native="cambiar(10)"><span>Locales</span></router-link></li>
+			<li v-if="this.$auth.getToken().admin == 'true'"><router-link :to="{ path: '/home/locales'} " replace :class="{ 'is-active': menu[10] }" @click.native="cambiar(10)"><span>Locales</span></router-link></li>
 	  </ul>
 
 	</aside>

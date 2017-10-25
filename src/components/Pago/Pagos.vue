@@ -25,7 +25,7 @@
           {{ props.row.monto }}
         </b-table-column>
         <b-table-column field="fecha" label="Fecha" >
-          {{ props.row.fecha }}
+          {{ props.row.fecha | moment("add","1 days","YYYY / MM / DD") }}
         </b-table-column>
         <b-table-column  label="Opciones" >
           <a class="button is-danger is-small" @click="deletePago(props.row)" >Eliminar</a>
@@ -48,7 +48,7 @@ export default {
   data () {
     return {
     	pagos: [],
-    	saldo: 0,
+    	// saldo: 0,
     	canCancel: ['escape', 'x', 'outside'],
     	isComponentModalActive: false
     };
@@ -59,22 +59,18 @@ export default {
   	},
   	addPago(pago){
   		this.pagos.unshift(pago)
-  	},
-  	deletePago(pago){
-  		this.$http.patch('/api/Productos/saldo',{total: this.saldo.total + pago.monto}).then(res2=> {
-        this.$http.delete('/api/Pagos/'+pago.id).then(res => {
-          this.pagos.splice(this.pagos.indexOf(pago), 1)
-          this.$toast.open({message:'Pago eliminado',type: 'is-danger'})
-        })
-      }) 
-  	},
-  	getSaldo(){
-      this.$http.get('/api/Productos/saldo').then(res => this.saldo = res.data.total)
-    }
+  	}
+  	// deletePago(pago){
+  	// 	this.$http.patch('/api/usuarios/'+this.$auth.getToken().userId+'?access_token='+ this.$auth.getToken().token,{saldo: this.saldo.total + pago.monto}).then(res2=> {
+   //      this.$http.delete('/api/Pagos/'+pago.id).then(res => {
+   //        this.pagos.splice(this.pagos.indexOf(pago), 1)
+   //        this.$toast.open({message:'Pago eliminado',type: 'is-danger'})
+   //      })
+   //    }) 
+  	// }
   },
   created(){
   	this.getPagos()
-  	this.getSaldo()
   }
 };
 </script>

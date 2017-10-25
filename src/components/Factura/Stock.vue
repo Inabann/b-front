@@ -4,11 +4,14 @@
       <h1 class="has-text-centered title"><span class="has-text-info">Almacen</span></h1>
     </div>  
 		<b-table :data="sinSaldo" :mobile-cards="true" :paginated="true" per-page="15" default-sort-direction="desc"
-			default-sort="cantidad">
+			default-sort="cantidad" detailed>
 
       <template scope="props">
-          <b-table-column field="_id" label="Producto" width="40" sortable>
-              {{ props.row._id }}
+        <b-table-column field="local.username" label="Local" width="40" sortable>
+              {{ props.row.local.username }}
+          </b-table-column>
+          <b-table-column field="_id.producto" label="Producto" width="40" sortable>
+              {{ props.row._id.producto }}
           </b-table-column>
 
           <b-table-column field="cantidad" label="en stock" sortable>
@@ -29,6 +32,22 @@
           </div>
         </section>
       </template>
+
+      <template slot="detail" scope="props">
+        <article class="media">
+          <div class="media-content">
+            <div class="content">
+              <div class="field is-grouped is-grouped-multiline">
+                <div class="control" v-for="producto in props.row.productos">
+                  <span class="tag is-info" >
+                    {{producto}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </template>
   	</b-table>
 	</div>
 </template>
@@ -40,7 +59,8 @@ export default {
 
   data () {
     return {
-    	stock: []
+    	stock: [],
+      local: ''
     };
   },
   methods: {
@@ -51,11 +71,14 @@ export default {
   computed:{
     sinSaldo(){
       return this.stock.filter(option => {
-        return !option._id.match('saldo')
+        return !option._id.producto.match('saldo') && option._id.usuario.match(this.local)
       })
     }
   },
   created(){
+    if(this.$auth.getToken().admin == 'false'){
+      this.local = this.$auth.getToken().userId
+    }
   	this.getStock()
   }
 };

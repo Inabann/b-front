@@ -10,15 +10,16 @@
       </div> 
    </div> 
     <b-modal :active.sync="isComponentModalActive" has-modal-card>
-      <ModalForm @nuevoAsesor="addNuevoAsesor($event)"></ModalForm>
+      <ModalForm @nuevoAsesor="addNuevoAsesor($event)" @UsuarioEdit="usuarioEdit($event)" :edit="editlocal"></ModalForm>
     </b-modal>
-    <b-table :data="asesores" :mobile-cards="true" :paginated="true" per-page="10" default-sort-direction="desc" >
+    <b-table :data="sinAdmin" :mobile-cards="true" :paginated="true" per-page="10" default-sort-direction="desc" >
       <template scope="props">
         <b-table-column field="username" label="Usuario" sortable>
           {{ props.row.username }}
         </b-table-column>
 
         <b-table-column  label="Opciones" >
+          <a class="button is-warning is-small" @click="editLocal(props.row)">Editar</a>
           <a class="button is-danger is-small" @click="removeLocal(props.row)">Eliminar</a>
         </b-table-column>
       </template>
@@ -40,7 +41,7 @@ export default {
     return {
       asesores:[],
       isComponentModalActive:false,
-      editAsesor: {}  
+      editlocal: {}  
     }
   },
   methods:{
@@ -65,6 +66,20 @@ export default {
         }
       })
     },
+    editLocal(editlocal){
+      this.editlocal = editlocal
+      this.isComponentModalActive = true
+    },
+    usuarioEdit(local){
+      this.sinAdmin[this.sinAdmin.indexOf(this.editlocal)] = local
+    }
+  },
+  computed: {
+    sinAdmin(){
+      return this.asesores.filter(option => {
+        return !option.admin
+      })
+    }
   },
   created(){
     this.getAsesores()
