@@ -9,7 +9,7 @@
         <b-input type="string" v-model="pago.numero" required></b-input>
       </b-field>
       <b-field label="Monto">
-        <b-input type="number" v-model="pago.monto" required></b-input>
+        <b-input type="number" v-model="pago.monto" min="0" step=".10" required></b-input>
       </b-field>
       <b-field label="Tipo">
         <b-select placeholder="Selecione un tipo" v-model="pago.tipo" required>
@@ -47,7 +47,7 @@ export default {
   methods:{ 
     savePago(){
       let n = this.saldo - Number(this.pago.monto)
-      this.$http.patch('/api/Productos/saldo',{total: n}).then(res2=> {
+      this.$http.patch('/api/usuarios/'+this.$auth.getToken().userId+'?access_token='+ this.$auth.getToken().token,{saldo: n}).then(res2=> {
         this.$http.post('/api/Pagos', this.pago).then(res => {
           this.$emit('newPago', res.data)
           this.$parent.close()

@@ -162,7 +162,7 @@ export default {
         if(this.venta.sim_equipo) this.vendido(this.venta.sim_equipo)
 
   			this.$toast.open({message:'Venta exitosa',type: 'is-success'})
-  			this.$http.patch('/api/usuarios/'+this.localSelec+'?access_token='+ this.$auth.getToken().token,{total: this.saldo - Number(this.venta.descuento)}).then(res2=> {
+  			this.$http.patch('/api/usuarios/'+this.localSelec+'?access_token='+ this.$auth.getToken().token,{saldo: this.saldo - Number(this.venta.descuento)}).then(res2=> {
   				this.venta = {}
           this.planSelec = null
           this.productoSelec = null
@@ -209,7 +209,7 @@ export default {
         return option.nombre
           .toString()
           .toLowerCase()
-          .indexOf(this.producto.toLowerCase()) >= 0
+          .indexOf(this.producto) >= 0
       })
     },
     filteredDataProd2(){
@@ -217,7 +217,7 @@ export default {
         return option.nombre
           .toString()
           .toLowerCase()
-          .indexOf(this.plan.toLowerCase()) >= 0
+          .indexOf(this.plan) >= 0
       })
     },
     filteredDataProd3(){
@@ -225,7 +225,7 @@ export default {
         return option.nombre
           .toString()
           .toLowerCase()
-          .indexOf(this.asesor.toLowerCase()) >= 0
+          .indexOf(this.asesor) >= 0
       })
     },
     precioEquipo(){

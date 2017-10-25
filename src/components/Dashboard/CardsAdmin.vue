@@ -3,7 +3,7 @@
 		<div class="column is-3" v-for="local in locales">
 			<div class="card">
 				<header class="card-header">
-					<h1 class="card-header-title">Saldo de {{local.username}}:</h1>
+					<h1 class="card-header-title">AnyPay {{local.username}}:</h1>
 				</header><!-- /header -->
 			  <div class="card-content">
 			    <div class="content">

@@ -38,7 +38,6 @@ export default {
   },
   methods:{ 
     savePlan(){
-      this.sendPlan.nombre = this.sendPlan.nombre.toLowerCase()
       this.$http.put('/api/Plans/'+this.sendPlan.id, this.sendPlan).then(res => {
         this.$emit('nuevoPlan', res.data)
         this.$parent.close()

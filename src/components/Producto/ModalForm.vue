@@ -36,8 +36,6 @@ export default {
     },
     methods:{ 
       saveProducto(){
-        this.producto.nombre = this.producto.nombre.toLowerCase()
-        this.producto.tipo = this.producto.tipo.toLowerCase()
         this.$http.post('/api/Productos', this.producto).then(res => {
         this.productos.unshift(res.data)
         this.$emit('newList', this.productos)

@@ -5,15 +5,74 @@
 	      <h1 class="has-text-centered title"><span class="has-text-info">Registro de Pagos/Regarcas</span></h1>
 	    </div>
 	    <div class="column is-offset-4">
-	      <button class="button is-warning is-medium" @click="isComponentModalActive = true"><span class="icon">
+	      <button class="button is-warning is-medium" @click="isComponentModalActive = true" v-if="this.$auth.getToken().admin == 'false'"><span class="icon">
 	      <i class="fa fa-plus"></i></span><span>Nuevo Pago/Recarga</span></button>
+        <button class="button is-warning is-medium" @click="isComponentModalActive2 = true" v-else><span class="icon">
+        <i class="fa fa-plus"></i></span><span>Nueva Transferencia</span></button>
 	    </div>
 	  </div>
-    <b-modal :active.sync="isComponentModalActive" has-modal-card :canCancel="canCancel">
+     <b-modal :active.sync="isComponentModalActive" has-modal-card :canCancel="canCancel">
        <ModalForm @newPago="addPago($event)"></ModalForm>
     </b-modal>
 
-    <b-table :data="pagos" :mobile-cards="true" >
+    <b-modal :active.sync="isComponentModalActive2" has-modal-card :canCancel="canCancel">
+       <TransfeModal @nuevo="addTransfe($event)"></TransfeModal>
+    </b-modal>
+
+    <b-tabs position="is-centered" class="block" v-if="this.$auth.getToken().admin == 'true'">
+      <b-tab-item label="Recargas/Pagos">
+        <b-table :data="pagos" :mobile-cards="true">
+          <template scope="props">
+            <b-table-column field="usuario" label="Local" sortable>
+              {{ props.row.usuario.username }}
+            </b-table-column>
+            <b-table-column field="tipo" label="Tipo" sortable>
+              {{ props.row.tipo }}
+            </b-table-column>
+            <b-table-column field="numero" label="Numero" >
+              {{ props.row.numero }}
+            </b-table-column>
+            <b-table-column field="monto" label="Monto" >
+              {{ props.row.monto }}
+            </b-table-column>
+            <b-table-column field="fecha" label="Fecha" >
+              {{ props.row.fecha | moment("add","1 days","YYYY / MM / DD") }}
+            </b-table-column>
+            <b-table-column  label="Opciones" >
+              <a class="button is-danger is-small" @click="deletePago(props.row)" >Eliminar</a>
+            </b-table-column>
+          </template>
+          <div slot="empty" class="has-text-centered">
+            Cargando ...
+          </div>
+        </b-table>
+      </b-tab-item>
+      <b-tab-item label="Transferencias">
+        <b-table :data="transfes" :mobile-cards="true">
+          <template scope="props">
+            <b-table-column field="de" label="De" sortable>
+              {{ props.row.de.username }}
+            </b-table-column>
+            <b-table-column field="monto" label="Monto" sortable>
+              {{ props.row.monto }}
+            </b-table-column>
+            <b-table-column field="para" label="Para" >
+              {{ props.row.para.username }}
+            </b-table-column>
+            <b-table-column field="fecha" label="Fecha" >
+              {{ props.row.fecha | moment("add","1 days","YYYY / MM / DD") }}
+            </b-table-column>
+          </template>
+          <div slot="empty" class="has-text-centered">
+            Cargando ...
+          </div>
+        </b-table>
+      </b-tab-item>
+    </b-tabs>
+
+   
+
+    <b-table :data="pagos" :mobile-cards="true" v-else>
       <template scope="props">
         <b-table-column field="tipo" label="Tipo" sortable>
           {{ props.row.tipo }}
@@ -40,38 +99,45 @@
 
 <script>
 import ModalForm from '@/components/Pago/ModalForm'
+import TransfeModal from '@/components/Pago/TransfeModal'
 
 export default {
 
   name: 'Pagos',
-  components: { ModalForm },
+  components: { ModalForm, TransfeModal },
   data () {
     return {
     	pagos: [],
+      transfes: [],
     	// saldo: 0,
     	canCancel: ['escape', 'x', 'outside'],
-    	isComponentModalActive: false
+    	isComponentModalActive: false,
+      isComponentModalActive2: false
     };
   },
   methods: {
-  	getPagos(){
-  		this.$http.get('/api/Pagos').then(res => this.pagos = res.data)
+  	getPagosAdmin(){
+  		this.$http.get('/api/Pagos?filter=%7B%22include%22%3A%22usuario%22%7D').then(res => this.pagos = res.data)
   	},
+    getPagos(){
+      this.$http.get('/api/Pagos?filter=%7B%22include%22%3A%22usuario%22%2C%22where%22%3A%7B%22usuarioId%22%3A%22'+this.$auth.getToken().userId+'%22%7D%7D').then(res => this.pagos = res.data)
+    },
   	addPago(pago){
   		this.pagos.unshift(pago)
-      
-  	}
-  	// deletePago(pago){
-  	// 	this.$http.patch('/api/usuarios/'+this.$auth.getToken().userId+'?access_token='+ this.$auth.getToken().token,{saldo: this.saldo.total + pago.monto}).then(res2=> {
-   //      this.$http.delete('/api/Pagos/'+pago.id).then(res => {
-   //        this.pagos.splice(this.pagos.indexOf(pago), 1)
-   //        this.$toast.open({message:'Pago eliminado',type: 'is-danger'})
-   //      })
-   //    }) 
-  	// }
+  	},
+    addTransfe(transfe){
+      this.$http.get('/api/Transaccions/'+transfe.id+'?filter=%7B%22include%22%3A%5B%22de%22%2C%22para%22%5D%7D').then( res => this.transfes.unshift(res.data))
+    },
+    getTransfes(){
+      this.$http.get('/api/Transaccions?filter=%7B%22include%22%3A%5B%22de%22%2C%22para%22%5D%7D').then( res => this.transfes = res.data)
+    }
   },
   created(){
-  	this.getPagos()
+    if(this.$auth.getToken().admin == 'true') {
+      this.getPagosAdmin()
+      this.getTransfes()
+    }
+    else this.getPagos()
   }
 };
 </script>

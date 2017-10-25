@@ -61,7 +61,7 @@ export default {
         return option.nombre
           .toString()
           .toLowerCase()
-          .indexOf(this.producto.toLowerCase()) >= 0
+          .indexOf(this.producto) >= 0
       })
     },
     filteredDataProd2(){
@@ -69,7 +69,7 @@ export default {
         return option.nombre
           .toString()
           .toLowerCase()
-          .indexOf(this.plan.toLowerCase()) >= 0
+          .indexOf(this.plan) >= 0
       })
     },
     filtrado(){

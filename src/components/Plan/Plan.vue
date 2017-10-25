@@ -129,7 +129,7 @@ export default {
   {
     searchPlan: function(){
       return this.plans.filter((plan) => {
-        return plan.nombre.match(this.plfilter.toLowerCase());
+        return plan.nombre.match(this.plfilter);
       });
     }
   },

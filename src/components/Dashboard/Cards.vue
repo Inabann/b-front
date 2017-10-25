@@ -3,7 +3,7 @@
 		<div class="column is-3">
 			<div class="card">
 				<header class="card-header">
-					<h1 class="card-header-title">Saldo/Credito total:</h1>
+					<h1 class="card-header-title">ANYPAY:</h1>
 				</header><!-- /header -->
 			  <div class="card-content">
 			    <div class="content">
