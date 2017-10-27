@@ -7,10 +7,10 @@
     <section class="modal-card-body">
       <b-field grouped>
         <b-field label="De:">
-        <b-select placeholder="Selecciona un local" v-model="transac.de" @input="option => setDe(option)">
+        <b-select placeholder="Selecciona un local" v-model="de" @input="option => setDe(option)">
           <option
               v-for="option in locales"
-              :value="option.id"
+              :value="option"
               :key="option.id">
               {{ option.username }}
           </option>
@@ -20,10 +20,11 @@
         <b-input type="number" v-model="transac.monto" min="0" step=".10" required></b-input>
       </b-field>
       <b-field label="Para:">
-        <b-select placeholder="Selecciona un local" v-model="transac.para" @input="option => setPara(option)">
+        <b-select placeholder="Selecciona un local" v-model="para" @input="option => setPara(option)">
+          <option value="externo">Externo</option>
           <option
               v-for="option in locales"
-              :value="option.id"
+              :value="option"
               :key="option.id">
               {{ option.username }}
           </option>
@@ -57,21 +58,32 @@ export default {
       this.$http.get('/api/usuarios?filter=%7B%22where%22%3A%7B%22admin%22%3Afalse%7D%7D&access_token='+this.$auth.getToken().token).then(res => this.locales = res.data)
     },
     saveTransfe(){
-      this.$http.post('/api/Transaccions', this.transac).then(res => {
-        this.$http.patch('/api/usuarios/'+transac.de+'?access_token='+ this.$auth.getToken().token,{saldo: this.de.saldo - Number(this.transac.monto)}).then(()=> {
-          this.$http.patch('/api/usuarios/'+transac.para+'?access_token='+ this.$auth.getToken().token,{saldo: this.para.saldo + Number(this.transac.monto)}).then(()=>{
+      if(this.para == 'externo'){
+        this.para = null
+        this.transac.para = null
+        this.$http.post('/api/Transaccions', this.transac).then(res => {
+          this.$http.patch('/api/usuarios/'+this.transac.de+'?access_token='+ this.$auth.getToken().token,{saldo: this.de.saldo - Number(this.transac.monto)}).then(()=> {
             this.$emit('nuevo', res.data)
             this.$parent.close()
-          })
+          }) 
         })
-        
-      })
+      } else{
+        this.$http.post('/api/Transaccions', this.transac).then(res => {
+          this.$http.patch('/api/usuarios/'+this.transac.de+'?access_token='+ this.$auth.getToken().token,{saldo: this.de.saldo - Number(this.transac.monto)}).then(()=> {
+            this.$http.patch('/api/usuarios/'+this.transac.para+'?access_token='+ this.$auth.getToken().token,{saldo: this.para.saldo + Number(this.transac.monto)}).then(()=>{
+              this.$emit('nuevo', res.data)
+              this.$parent.close()
+            })
+          }) 
+        })
+      }
     },
     setDe(de){
-      this.de = de
+      this.transac.de = de.id
     },
     setPara(para){
-      this.para = para
+      if(para != 'externo') this.transac.para = para.id
+      
     }
   },
   created: function(){

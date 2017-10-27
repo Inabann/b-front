@@ -7,9 +7,11 @@
 	    <div class="column is-offset-4">
 	      <button class="button is-warning is-medium" @click="isComponentModalActive = true" v-if="this.$auth.getToken().admin == 'false'"><span class="icon">
 	      <i class="fa fa-plus"></i></span><span>Nuevo Pago/Recarga</span></button>
-        <button class="button is-warning is-medium" @click="isComponentModalActive2 = true" v-else><span class="icon">
-        <i class="fa fa-plus"></i></span><span>Nueva Transferencia</span></button>
 	    </div>
+      <div class="column">
+        <button class="button is-warning is-medium" @click="isComponentModalActive2 = true" ><span class="icon">
+        <i class="fa fa-plus"></i></span><span>Nueva Transferencia</span></button>
+      </div>
 	  </div>
      <b-modal :active.sync="isComponentModalActive" has-modal-card :canCancel="canCancel">
        <ModalForm @newPago="addPago($event)"></ModalForm>
@@ -19,9 +21,9 @@
        <TransfeModal @nuevo="addTransfe($event)"></TransfeModal>
     </b-modal>
 
-    <b-tabs position="is-centered" class="block" v-if="this.$auth.getToken().admin == 'true'">
+    <b-tabs position="is-centered" class="block" >
       <b-tab-item label="Recargas/Pagos">
-        <b-table :data="pagos" :mobile-cards="true">
+        <b-table :data="pagos" :mobile-cards="true" :default-sort-direction="'desc'" default-sort="fecha">
           <template scope="props">
             <b-table-column field="usuario" label="Local" sortable>
               {{ props.row.usuario.username }}
@@ -48,7 +50,7 @@
         </b-table>
       </b-tab-item>
       <b-tab-item label="Transferencias">
-        <b-table :data="transfes" :mobile-cards="true">
+        <b-table :data="transfes" :mobile-cards="true" :default-sort-direction="'desc'" default-sort="fecha">
           <template scope="props">
             <b-table-column field="de" label="De" sortable>
               {{ props.row.de.username }}
@@ -57,9 +59,14 @@
               {{ props.row.monto }}
             </b-table-column>
             <b-table-column field="para" label="Para" >
-              {{ props.row.para.username }}
+              <div v-if="props.row.para != null">
+                {{ props.row.para.username }}
+              </div>
+              <div v-else>
+                Externo
+              </div>
             </b-table-column>
-            <b-table-column field="fecha" label="Fecha" >
+            <b-table-column field="fecha" label="Fecha" sortable >
               {{ props.row.fecha | moment("add","1 days","YYYY / MM / DD") }}
             </b-table-column>
           </template>
@@ -70,30 +77,6 @@
       </b-tab-item>
     </b-tabs>
 
-   
-
-    <b-table :data="pagos" :mobile-cards="true" v-else>
-      <template scope="props">
-        <b-table-column field="tipo" label="Tipo" sortable>
-          {{ props.row.tipo }}
-        </b-table-column>
-        <b-table-column field="numero" label="Numero" >
-          {{ props.row.numero }}
-        </b-table-column>
-        <b-table-column field="monto" label="Monto" >
-          {{ props.row.monto }}
-        </b-table-column>
-        <b-table-column field="fecha" label="Fecha" >
-          {{ props.row.fecha | moment("add","1 days","YYYY / MM / DD") }}
-        </b-table-column>
-        <b-table-column  label="Opciones" >
-          <a class="button is-danger is-small" @click="deletePago(props.row)" >Eliminar</a>
-        </b-table-column>
-      </template>
-      <div slot="empty" class="has-text-centered">
-        Cargando ...
-      </div>
-    </b-table>
   </div>
 </template>
 
@@ -135,9 +118,9 @@ export default {
   created(){
     if(this.$auth.getToken().admin == 'true') {
       this.getPagosAdmin()
-      this.getTransfes()
     }
     else this.getPagos()
+    this.getTransfes()
   }
 };
 </script>

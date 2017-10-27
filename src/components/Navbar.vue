@@ -12,7 +12,7 @@
     
     
     <div class="nav-right nav-menu" style="margin-right: 40px;">
-      <span class="nav-item has-text-white" >{{user.username}}</span>
+      <span class="nav-item has-text-white" >{{user.username | uppercase}}</span>
       <a class="nav-item is-tab" @click="logout()"><span class="has-text-white">Cerrar Sesión</span></a>
     </div>
   </div>

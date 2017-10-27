@@ -68,7 +68,7 @@ export default {
 	color: #038E7C;
 }
 .menu-list span{
-	color: white;
+	color: black;
 }
 .menu-list a:hover span {
 	color: black;
