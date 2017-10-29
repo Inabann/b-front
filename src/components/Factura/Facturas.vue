@@ -97,8 +97,8 @@ export default {
         hasIcon: true,
         onConfirm: () => {
           this.$toast.open({message:'Factura eliminada',position: 'is-bottom',type: 'is-danger'})
-          this.$http.delete('/api/Facturas/'+factura.codigo+'/detalleProductos').then(res => {
-            this.$http.delete('/api/Facturas/'+factura.codigo).then(resp => {
+          this.$http.delete('/api/Facturas/'+encodeURIComponent(factura.codigo)+'/detalleProductos').then(res => {
+            this.$http.delete('/api/Facturas/'+encodeURIComponent(factura.codigo)).then(resp => {
               this.facturas.splice(this.facturas.indexOf(factura), 1)
             })
           });

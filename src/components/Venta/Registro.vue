@@ -1,22 +1,35 @@
 <template>
 	<section>
-		<div class="box">
-			<h2 class="title is-5"><span>Datos del Cliente</span><span class="is-pulled-right">fecha: {{new Date()|moment("YYYY / MM / DD")}}</span></h2>
-			<b-field grouped>
-				<b-field label="DNI">
-		      <b-input type="text" v-model="venta.dni"  />
-		    </b-field>
-		    <b-field label="Nombres y Apellidos" expanded>
-		      <b-input type="text"  v-model="venta.nombre"/>
-		    </b-field>
-		    <b-field label="Email" expanded>
-		      <b-input type="email" v-model="venta.email"  />
-		    </b-field>
-		    <b-field label="N° referencia" expanded>
-		      <b-input type="text" v-model="venta.ref"  />
-		    </b-field>
-	    </b-field>
-		</div>
+    <b-collapse class="card" :open.sync="isOpen3">
+      <div slot="trigger" class="card-header">
+        <p class="card-header-title">
+          <span>Datos del Cliente</span>
+        </p>
+        <p class="card-header-icon">
+          <span class="title is-5">fecha: {{new Date()|moment("YYYY / MM / DD")}}</span>
+        </p>
+      </div>
+      <div class="card-content">
+        <div class="content">
+          <b-field grouped>
+            <b-field label="DNI">
+              <b-input type="text" v-model="venta.dni"  />
+            </b-field>
+            <b-field label="Nombres y Apellidos" expanded>
+              <b-input type="text"  v-model="venta.nombre"/>
+            </b-field>
+            <b-field label="Email" expanded>
+              <b-input type="email" v-model="venta.email"  />
+            </b-field>
+            <b-field label="N° referencia" expanded>
+              <b-input type="text" v-model="venta.ref"  />
+            </b-field>
+          </b-field>
+        </div>
+      </div>
+    </b-collapse>
+    <br>
+
 		<b-collapse class="card" :open.sync="isOpen">
       <div slot="trigger" class="card-header">
         <p class="card-header-title">
@@ -49,6 +62,7 @@
       </div>
     </b-collapse>
     <br>
+    
     <b-collapse class="card" :open.sync="isOpen2">
       <div slot="trigger" class="card-header">
         <p class="card-header-title">
@@ -64,12 +78,9 @@
 						<b-field label="N° SIM mobile" expanded>
 				      <b-input type="text" v-model="venta.sim_chip"/>
 				    </b-field>
-					    <b-field label="Precio del plan" >
-					  		<span class="title is-4" v-if="planSelec">S/. {{planSelec.monto}}</span>
-					    </b-field>
-					    <b-field label="Descuento del plan" expanded>
-					  		<span class="title is-4" v-if="planSelec">S/. {{planSelec.descuento}}</span>
-					    </b-field>
+				    <b-field label="Precio del plan" expanded>
+				  		<span class="title is-4" v-if="planSelec">S/. {{planSelec.monto}}</span>
+				    </b-field>
 			    </b-field>
 			    <b-field grouped>
 						<b-field label="Equipo" >
@@ -130,6 +141,7 @@ export default {
     	},
     	isOpen: false,
     	isOpen2: true,
+      isOpen3: false,
     	//autocomplete
       asesores: [],
       asesor: '',

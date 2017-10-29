@@ -55,8 +55,11 @@
             <b-table-column field="de" label="De" sortable>
               {{ props.row.de.username }}
             </b-table-column>
-            <b-table-column field="monto" label="Monto" sortable>
+            <b-table-column field="monto" label="Monto AnyPay" sortable>
               {{ props.row.monto }}
+            </b-table-column>
+            <b-table-column field="precio" label="Precio" sortable>
+              {{ props.row.precio }}
             </b-table-column>
             <b-table-column field="para" label="Para" >
               <div v-if="props.row.para != null">

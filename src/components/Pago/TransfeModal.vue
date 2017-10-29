@@ -16,8 +16,11 @@
           </option>
         </b-select>
       </b-field>
-      <b-field label="Monto:">
+      <b-field label="Monto PayAny:">
         <b-input type="number" v-model="transac.monto" min="0" step=".10" required></b-input>
+      </b-field>
+      <b-field label="Precio:">
+        <b-input type="number" v-model="transac.precio" min="0" step=".10" required></b-input>
       </b-field>
       <b-field label="Para:">
         <b-select placeholder="Selecciona un local" v-model="para" @input="option => setPara(option)">
@@ -94,4 +97,7 @@ export default {
 </script>
 
 <style scoped>
+.modal-card {
+        width: auto;
+    }
 </style>
