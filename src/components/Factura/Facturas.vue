@@ -106,7 +106,7 @@ export default {
       })
     },
     nuevaFactura(factura){
-      this.$http.get('/api/Facturas/'+factura.codigo+'?filter=%7B%22include%22%20%3A%20%5B%22usuario%22%2C%22detalleProductos%22%5D%7D').then(res => {
+      this.$http.get('/api/Facturas/'+encodeURIComponent(factura.codigo)+'?filter=%7B%22include%22%20%3A%20%5B%22usuario%22%2C%22detalleProductos%22%5D%7D').then(res => {
         this.facturas.unshift(res.data)
       })
     }

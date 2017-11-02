@@ -98,10 +98,10 @@
               <b-autocomplete v-model="asesor" :data="filteredDataProd3" field="nombre" @select="option => asesorSelec = option"></b-autocomplete>
             </b-field>
             <b-field label="Local" v-if="this.$auth.getToken().admin == 'true'">
-              <b-select placeholder="Selecciona un local" @input="option => getSaldoAdmin(option)">
+              <b-select placeholder="Selecciona un local" @input="option => setSaldo(option)">
                   <option
-                      v-for="option in locales"
-                      :value="option.id"
+                      v-for="option in localesSinAdmin"
+                      :value="option"
                       :key="option.id">
                       {{ option.username }}
                   </option>
@@ -202,17 +202,25 @@ export default {
         this.saldo = res.data.saldo
       })
     },
-    getSaldoAdmin(userId){
-      this.localSelec = userId
-      this.$http.get('/api/usuarios/'+userId+'?access_token='+ this.$auth.getToken().token).then(res => {
-        this.saldo = res.data.saldo
-      })
+    setSaldo(local){
+      this.saldo = local.saldo
+      this.localSelec = local.id
     },
     getPlanes(){
       this.$http.get('/api/Asesors').then(res => this.asesores = res.data)
     },
     getLocales(){
-      this.$http.get('/api/usuarios?filter=%7B%22where%22%3A%7B%22admin%22%3Afalse%7D%7D&access_token='+this.$auth.getToken().token).then(res => this.locales = res.data)
+      this.$http.get('/api/usuarios?access_token='+this.$auth.getToken().token).then(res => {
+        this.locales = res.data
+        if(this.$auth.getToken().admin == 'false') {
+          let a
+          a = this.locales.find( option => {
+            return option.id === this.$auth.getToken().userId
+          })
+          this.saldo = a.saldo
+          this.localSelec = a.id
+        }
+      })//filter=%7B%22where%22%3A%7B%22admin%22%3Afalse%7D%7D&
     }
   },
   computed:{
@@ -240,6 +248,11 @@ export default {
           .indexOf(this.asesor) >= 0
       })
     },
+    localesSinAdmin(){
+      return this.locales.filter((option) => {
+        return !option.admin
+      })
+    },
     precioEquipo(){
     	if(this.productoSelec != null && this.planSelec != null){
     		var item = this.packs.filter((pack) => {
@@ -261,13 +274,8 @@ export default {
         this.planes = res.data
     })
     this.getProductos()
-    
     this.getPacks()
-    if(this.$auth.getToken().admin == 'false') {
-      this.getSaldo()
-      this.localSelec = this.$auth.getToken().userId
-    }
-    if(this.$auth.getToken().admin == 'true') this.getLocales()
+    this.getLocales()
     
   }
 };

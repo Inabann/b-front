@@ -124,7 +124,7 @@ export default {
       locales: [],
       local: '',
       hasta: 0,
-      saldo: {}
+      saldo: 0
     };
   },
   methods: {
@@ -154,14 +154,17 @@ export default {
   	},
     addSaldo(){
       this.factura.usuarioId = this.local.id
-      this.$http.post('/api/Facturas', this.factura).then(res => {
-        this.$http.post('/api/DetalleProductos', {serie: res.data.codigo, productoId: 'saldo', facturaId: res.data.codigo, saldo: this.num_serie, usuarioId: this.local.id}).then(resp => {
-          this.$http.patch('/api/Productos/saldo', {total: this.saldo.total + Number(this.num_serie)}).then(response => {
-            this.$emit('facturaAgregada', res.data)
-            this.$parent.close()
+      this.$http.get('/api/usuarios/'+this.local.id+'?access_token='+this.$auth.getToken().token).then(res2 => {
+        this.saldo = res2.data.saldo
+        this.$http.post('/api/Facturas', this.factura).then(res => {
+          this.$http.post('/api/DetalleProductos', {serie: res.data.codigo, productoId: 'saldo', facturaId: res.data.codigo, saldo: this.num_serie, usuarioId: this.local.id}).then(() => {
+            this.$http.patch('/api/usuarios/'+this.local.id+'?access_token='+this.$auth.getToken().token, {saldo: this.saldo + Number(this.num_serie)})
           })
-        })   
+          this.$emit('facturaAgregada', res.data)
+          this.$parent.close()   
+        })
       })
+      
     },
   	eliminar(item){
   		this.productosAgregados.splice(this.productosAgregados.indexOf(item), 1)
@@ -176,8 +179,11 @@ export default {
     getLocales(){
       this.$http.get('/api/usuarios?access_token='+this.$auth.getToken().token).then(res => this.locales = res.data)
     },
-    getSaldo(){
-      this.$http.get('/api/Productos/saldo').then(res => this.saldo = res.data)
+    getSaldo(userId){
+      this.$http.get('/api/usuarios/'+userId+'?access_token='+this.$auth.getToken().token).then(res => {
+        this.saldo = res.data.saldo
+        console.log(this.saldo, 'funcion')
+      })
     },
   },
   computed: {
@@ -210,7 +216,6 @@ export default {
 		this.factura.fecha = today //por defecto la fecha sera hoy
 		this.getProductos()
     this.getLocales()
-    this.getSaldo()
   }
 };
 </script>

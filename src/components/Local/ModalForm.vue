@@ -1,7 +1,8 @@
 <template>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Formulario Nueva Tienda</p>
+      <p class="modal-card-title" v-if="!flag">Formulario Nueva Tienda</p>
+      <p class="modal-card-title" v-else>Editar Datos del Local</p>
     </header>
     <section class="modal-card-body">
       <div class="box">
@@ -32,20 +33,30 @@ export default {
     	asesor:{
         username:'',
         password:''
-    	}
+    	},
+      flag: false
     };
   },
   methods: {
     saveAsesor(){
-      this.$http.patch('/api/usuarios/'+this.edit.id+'?access_token='+this.$auth.getToken().token, this.asesor).then( res => {
-        this.$emit('UsuarioEdit', res.data)
-        this.$parent.close()
-      })
+      if(this.edit != null){
+        this.$http.patch('/api/usuarios/'+this.edit.id+'?access_token='+this.$auth.getToken().token, this.asesor).then( res => {
+          this.$emit('UsuarioEdit', res.data)
+          this.$parent.close()
+        })
+      }else{
+        this.$http.post('/api/usuarios?access_token='+this.$auth.getToken().token, this.asesor).then( res => {
+          this.$emit('nuevoAsesor', res.data)
+          this.$parent.close()
+        })
+      }
+      
     }
   },
   created(){
-    if(this.edit){
+    if(this.edit != null){
       this.asesor.username = this.edit.username
+      this.flag = true
     }
   }
 };

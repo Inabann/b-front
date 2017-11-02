@@ -17,7 +17,7 @@
           </div>
           <div class="column is-5">
             <b-field label="Precio" expanded>
-              <b-input type="number" v-model="plan.monto" placeholder="S/." icon="money" required />
+              <b-input type="number" min="0" step=".10" v-model="plan.monto" placeholder="S/." icon="money" required />
             </b-field>
           </div>
           <div class="column is-3">
@@ -94,7 +94,6 @@ export default {
       this.$http.get('/api/Plans').then(res => this.plans = res.data).catch(err => console.log(err))
     },
     savePlan(){
-      this.plan.nombre = this.plan.nombre.toLowerCase()
       this.$http.post('/api/Plans', this.plan).then(res => {
         this.plans.unshift(res.data)
         this.$toast.open({message:'Plan guardado',type: 'is-success'})
