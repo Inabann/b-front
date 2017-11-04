@@ -50,7 +50,7 @@ export default new Router({
         {
           path: 'producto',
           component: Producto,
-          meta: { forAuth : true, forAdmin : false}
+          meta: { forAuth : true, forAdmin : true}
         },
         {
           path: 'facturas',
@@ -75,7 +75,7 @@ export default new Router({
         {
           path: 'packs',
           component: Packs,
-          meta: { forAuth : true}
+          meta: { forAuth : true, forAdmin : true}
         },
         {
           path: 'locales',

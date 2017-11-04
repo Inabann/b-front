@@ -78,7 +78,7 @@
 						<b-field label="N° SIM mobile" expanded>
 				      <b-input type="text" v-model="venta.sim_chip"/>
 				    </b-field>
-				    <b-field label="Precio del plan" expanded>
+				    <b-field label="Precio del plan" expanded v-show="!precioEquipo">
 				  		<span class="title is-4" v-if="planSelec">S/. {{planSelec.monto}}</span>
 				    </b-field>
 			    </b-field>
@@ -98,7 +98,7 @@
               <b-autocomplete v-model="asesor" :data="filteredDataProd3" field="nombre" @select="option => asesorSelec = option"></b-autocomplete>
             </b-field>
             <b-field label="Local" v-if="this.$auth.getToken().admin == 'true'">
-              <b-select placeholder="Selecciona un local" @input="option => setSaldo(option)">
+              <b-select placeholder="Selecciona un local" @input="option => setSaldo(option)" v-model="local">
                   <option
                       v-for="option in localesSinAdmin"
                       :value="option"
@@ -108,7 +108,7 @@
               </b-select>
           </b-field>
           </b-field>
-			    <a class="button is-success" @click="saveVenta">
+			    <a class="button is-success" @click="saveVenta()">
 						<span class="icon">
 							<i class="fa fa-check"></i>
 						</span>
@@ -156,29 +156,53 @@ export default {
       packs: [],
       saldo: 0,
       locales: [],
-      localSelec: null
+      localSelec: null,
+      local : ''
     };
   },
   methods: {
+    limpiar(){
+      this.venta = {}
+      this.planSelec = null
+      this.productoSelec = null
+      this.asesorSelec = null
+      this.asesor = ''
+      this.producto = ''
+      this.plan = ''
+      this.locales = []
+      this.localSelec = ''
+      this.local = ''
+      this.getLocales()
+    },
   	saveVenta(){
-      if(this.venta.equipo) this.venta.equipo = this.productoSelec.nombre
-  		if(this.venta.plan) this.venta.plan = this.planSelec.nombre
-  		if(this.venta.descuento) this.venta.descuento = this.planSelec.descuento
-  		if(this.venta.precio) this.venta.precio = this.precioEquipo
+      if(this.productoSelec) this.venta.equipo = this.productoSelec.nombre
+  		if(this.planSelec) {
+        this.venta.plan = this.planSelec.nombre
+        this.venta.descuento = this.planSelec.descuento
+      }
+  		if(this.precioEquipo) this.venta.precio = this.precioEquipo
       this.venta.asesorId = this.asesorSelec.id
   		let d = new Date()
   		d.setDate(d.getDate()-1)
   		this.venta.fecha_venta = d.toISOString().slice(0,10)
+      this.venta.usuarioId = this.localSelec
   		this.$http.post('/api/Venta', this.venta).then(res => {
   			if(this.venta.sim_chip) this.vendido(this.venta.sim_chip)
         if(this.venta.sim_equipo) this.vendido(this.venta.sim_equipo)
 
   			this.$toast.open({message:'Venta exitosa',type: 'is-success'})
-  			this.$http.patch('/api/usuarios/'+this.localSelec+'?access_token='+ this.$auth.getToken().token,{saldo: this.saldo - Number(this.venta.descuento)}).then(res2=> {
+  			this.$http.patch('/api/usuarios/'+this.localSelec+'?access_token='+ this.$auth.getToken().token,{saldo: this.saldo - Number(this.venta.descuento)}).then(()=> {
   				this.venta = {}
           this.planSelec = null
           this.productoSelec = null
           this.asesorSelec = null
+          this.asesor = ''
+          this.producto = ''
+          this.plan = ''
+          this.locales = []
+          this.localSelec = ''
+          this.local = ''
+          this.getLocales()
   			})
   		})
 
@@ -203,8 +227,10 @@ export default {
       })
     },
     setSaldo(local){
-      this.saldo = local.saldo
-      this.localSelec = local.id
+      if(local != null){
+        this.saldo = local.saldo
+        this.localSelec = local.id
+      }
     },
     getPlanes(){
       this.$http.get('/api/Asesors').then(res => this.asesores = res.data)

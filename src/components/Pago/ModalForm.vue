@@ -47,6 +47,7 @@ export default {
   methods:{ 
     savePago(){
       let n = this.saldo - Number(this.pago.monto)
+      this.pago.usuarioId = this.$auth.getToken().userId
       this.$http.patch('/api/usuarios/'+this.$auth.getToken().userId+'?access_token='+ this.$auth.getToken().token,{saldo: n}).then(res2=> {
         this.$http.post('/api/Pagos', this.pago).then(res => {
           this.$emit('newPago', res.data)

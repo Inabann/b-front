@@ -16,8 +16,8 @@
 			<ul class="menu-list">
 				<li ><router-link :to="{ path: '/home/facturas'} " replace :class="{ 'is-active': menu[2] }" @click.native="cambiar(2)"><span> Compras/Facturas</span></router-link></li>
 				<li ><router-link :to="{ path: '/home/stock'} " replace :class="{ 'is-active': menu[3] }" @click.native="cambiar(3)"><span> Stock Disponible</span></router-link></li>
-				<li ><router-link :to="{ path: '/home/packs'} " replace :class="{ 'is-active': menu[4] }" @click.native="cambiar(4)"><span> Packs</span></router-link></li>
-				<li ><router-link :to="{ path: '/home/producto'} " replace :class="{ 'is-active': menu[8] }" @click.native="cambiar(8)"><span> Productos</span></router-link></li>
+				<li v-if="this.$auth.getToken().admin == 'true'"><router-link :to="{ path: '/home/packs'} " replace :class="{ 'is-active': menu[4] }" @click.native="cambiar(4)"><span> Packs</span></router-link></li>
+				<li v-if="this.$auth.getToken().admin == 'true'"><router-link :to="{ path: '/home/producto'} " replace :class="{ 'is-active': menu[8] }" @click.native="cambiar(8)"><span> Productos</span></router-link></li>
 			</ul>
 
 	  </ul>

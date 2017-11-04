@@ -109,7 +109,7 @@ export default {
       this.$http.get('/api/Pagos?filter=%7B%22include%22%3A%22usuario%22%2C%22where%22%3A%7B%22usuarioId%22%3A%22'+this.$auth.getToken().userId+'%22%7D%7D').then(res => this.pagos = res.data)
     },
   	addPago(pago){
-  		this.pagos.unshift(pago)
+      this.$http.get('/api/Pagos/'+pago.id+'?filter=%7B%22include%22%3A%22usuario%22%7D').then( res => this.pagos.unshift(res.data))
   	},
     addTransfe(transfe){
       this.$http.get('/api/Transaccions/'+transfe.id+'?filter=%7B%22include%22%3A%5B%22de%22%2C%22para%22%5D%7D').then( res => this.transfes.unshift(res.data))

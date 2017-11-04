@@ -9,11 +9,19 @@ export default {
   	}
   },
   mounted () {
-    this.$http.post('/api/Venta/VendidoporMes').then(res => {
-      this.labels = res.data.meses
-      this.cantidad = res.data.cantidad
-      this.setGraph()
-    })
+    if(this.$auth.getToken().admin == 'true'){
+      this.$http.post('/api/Venta/VendidoporMes').then(res => {
+        this.labels = res.data.meses
+        this.cantidad = res.data.cantidad
+        this.setGraph()
+      })
+    } else{
+      this.$http.post('/api/Venta/VendidoporLocal', {local: this.$auth.getToken().userId}).then(res => {
+        this.labels = res.data.meses
+        this.cantidad = res.data.cantidad
+        this.setGraph()
+      })
+    }
   },
   methods: {
   	setGraph(){
