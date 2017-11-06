@@ -16,11 +16,11 @@
 		<div class="column is-3">
 			<div class="card">
 				<header class="card-header">
-					<h1 class="card-header-title">N° ventas del dia:</h1>
+					<h1 class="card-header-title">N° ventas del Mes:</h1>
 				</header><!-- /header -->
 			  <div class="card-content">
 			    <div class="content">
-			      <p class="title is-3 has-text-centered"># {{cantidad_ventas}}</p>
+			      <p class="title is-3 has-text-centered"># {{cantidadMes}}</p>
 			    </div>
 			  </div>
 			</div>
@@ -33,7 +33,7 @@
 export default {
 
   name: 'Cards',
-
+  props: ['cantidadMes'],
   data () {
     return {
     	saldo: 0,
@@ -58,7 +58,6 @@ export default {
   	d.setDate(d.getDate()-1)
   	this.hoy = d.toISOString().slice(0,10)
   	this.getSaldo()
-  	this.getNVentas()
   }
 };
 </script>

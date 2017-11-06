@@ -66,7 +66,7 @@
     <b-collapse class="card" :open.sync="isOpen2">
       <div slot="trigger" class="card-header">
         <p class="card-header-title">
-            Información de Bitel
+            Linea Nueva
         </p>
       </div>
       <div class="card-content">
@@ -82,7 +82,14 @@
 				  		<span class="title is-4" v-if="planSelec">S/. {{planSelec.monto}}</span>
 				    </b-field>
 			    </b-field>
-			    <b-field grouped>
+          
+          <b-switch v-model="equipo"
+              true-value="Con"
+              false-value="Sin">
+              {{ equipo }} Equipo
+          </b-switch>
+
+			    <b-field grouped v-if="equipo == 'Con'">
 						<b-field label="Equipo" >
 				      <b-autocomplete v-model="producto" placeholder="ej. j5" :data="filteredDataProd" field="nombre" @select="option => productoSelec = option" ></b-autocomplete>
 				    </b-field>
@@ -157,29 +164,18 @@ export default {
       saldo: 0,
       locales: [],
       localSelec: null,
-      local : ''
+      local : '',
+      equipo: 'Sin'
     };
   },
   methods: {
-    limpiar(){
-      this.venta = {}
-      this.planSelec = null
-      this.productoSelec = null
-      this.asesorSelec = null
-      this.asesor = ''
-      this.producto = ''
-      this.plan = ''
-      this.locales = []
-      this.localSelec = ''
-      this.local = ''
-      this.getLocales()
-    },
   	saveVenta(){
       if(this.productoSelec) this.venta.equipo = this.productoSelec.nombre
   		if(this.planSelec) {
         this.venta.plan = this.planSelec.nombre
         this.venta.descuento = this.planSelec.descuento
       }
+      let n = this.saldo - Number(this.venta.descuento)
   		if(this.precioEquipo) this.venta.precio = this.precioEquipo
       this.venta.asesorId = this.asesorSelec.id
   		let d = new Date()
@@ -191,7 +187,7 @@ export default {
         if(this.venta.sim_equipo) this.vendido(this.venta.sim_equipo)
 
   			this.$toast.open({message:'Venta exitosa',type: 'is-success'})
-  			this.$http.patch('/api/usuarios/'+this.localSelec+'?access_token='+ this.$auth.getToken().token,{saldo: this.saldo - Number(this.venta.descuento)}).then(()=> {
+  			this.$http.patch('/api/usuarios/'+this.localSelec+'?access_token='+ this.$auth.getToken().token,{saldo: n.toFixed(1)}).then(()=> {
   				this.venta = {}
           this.planSelec = null
           this.productoSelec = null
@@ -205,7 +201,6 @@ export default {
           this.getLocales()
   			})
   		})
-
   	},
   	vendido(serie){
   		this.$http.patch('/api/DetalleProductos/'+serie, {vendido : true})

@@ -149,6 +149,7 @@ export default {
   				this.$http.post('/api/DetalleProductos', {serie: item.serie, productoId: item.productoId, facturaId: res.data.codigo, usuarioId: this.local.id})
   			})
         this.$emit('facturaAgregada', res.data)
+        this.$toast.open({message:'Factura Agregada',type: 'is-success'})
   			this.$parent.close()
   		})
   	},
@@ -161,6 +162,7 @@ export default {
             this.$http.patch('/api/usuarios/'+this.local.id+'?access_token='+this.$auth.getToken().token, {saldo: this.saldo + Number(this.num_serie)})
           })
           this.$emit('facturaAgregada', res.data)
+          this.$toast.open({message:'Factura Agregada',type: 'is-success'})
           this.$parent.close()   
         })
       })
@@ -177,7 +179,7 @@ export default {
       })
     },
     getLocales(){
-      this.$http.get('/api/usuarios?access_token='+this.$auth.getToken().token).then(res => this.locales = res.data)
+      this.$http.get('/api/usuarios?filter=%7B%22where%22%3A%7B%22admin%22%3Afalse%7D%7D&access_token='+this.$auth.getToken().token).then(res => this.locales = res.data)
     },
     getSaldo(userId){
       this.$http.get('/api/usuarios/'+userId+'?access_token='+this.$auth.getToken().token).then(res => {

@@ -32,13 +32,14 @@
         <div class="media-content">
           <div class="content">
             <p>
+              <!-- <small v-if="!props.row.operador && !props.row.tipo_plan && props.row.num_porta">Migracion</small> saber si es migracion-->
+              <strong>{{ props.row.num_porta }}</strong>
+              <strong>{{ props.row.operador }} </strong>
+              <small>{{ props.row.tipo_plan }}</small>
+            </p>
+            <p>
               <strong>{{props.row.ref}}</strong>
               <small>{{props.row.email}}</small>
-            </p>
-            <p v-if="props.row.operador">
-              <strong>{{ props.row.operador }} </strong>
-              <small>{{ props.row.num_porta }}</small>
-              <small>{{ props.row.tipo_plan }}</small>
             </p>
           </div>
         </div>

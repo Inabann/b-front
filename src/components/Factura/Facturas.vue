@@ -12,6 +12,11 @@
 		<b-modal :active.sync="isComponentModalActive" :canCancel="canCancel" has-modal-card>
       <ModalNuevaFactura @facturaAgregada="nuevaFactura($event)"></ModalNuevaFactura>
     </b-modal>
+
+    <b-modal :active.sync="isComponentModalActive2" :canCancel="canCancel" has-modal-card>
+      <ModalEdit :factura="facturaEdit"></ModalEdit>
+    </b-modal>
+
 		<b-table
       :data="facturas"
       detailed>
@@ -32,6 +37,7 @@
           <strong>S/.</strong>{{ props.row.total }}
         </b-table-column>
         <b-table-column label="Opciones">
+          <a class="button is-warning is-small" @click="editFactura(props.row)">Editar</a>
           <a class="button is-danger is-small" @click="removeFactura(props.row)">Eliminar</a>
         </b-table-column>
       </template>
@@ -68,20 +74,27 @@
 
 <script>
 import ModalNuevaFactura from '@/components/Factura/ModalNuevaFactura'
+import ModalEdit from '@/components/Factura/ModalEdit'
 
 export default {
 
   name: 'Facturas',
-  components: { ModalNuevaFactura },
+  components: { ModalNuevaFactura, ModalEdit },
   data () {
     return {
     	isComponentModalActive: false,
+      isComponentModalActive2: false,
     	canCancel: ['escape', 'x', 'outside'],
     	facturas: [],
-    	detalleFactura: []
+    	detalleFactura: [],
+      facturaEdit: {}
     };
   },
   methods: {
+    editFactura(factura){
+      this.facturaEdit = factura
+      this.isComponentModalActive2 = true
+    },
   	getFacturas(){
   		this.$http.get('/api/Facturas?filter=%7B%22include%22%20%3A%20%5B%22usuario%22%2C%22detalleProductos%22%5D%7D').then(res => this.facturas = res.data)
   	},

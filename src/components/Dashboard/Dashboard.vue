@@ -1,17 +1,17 @@
 <template>
   <div>
     <div v-if="this.$auth.getToken().admin == 'true'">
-      <CardsAdmin></CardsAdmin>
+      <CardsAdmin :cantidadMes="cantidad"></CardsAdmin>
     </div>
     <div v-else>
       <Cards></Cards>
     </div>
     <div class="columns">
       <div class="column">
-        <TotalporMes></TotalporMes>
+        <TotalporMes :cantidadMes="cantidad"></TotalporMes>
       </div>
       <div class="column">
-        <CantidadporMes></CantidadporMes>
+        <CantidadporMes @VentaxMes="cantidad = $event"></CantidadporMes>
       </div>
     </div>
     <VentasxAsesor></VentasxAsesor>
@@ -32,7 +32,7 @@ export default {
   components: { Cards, TotalporMes, CantidadporMes, VentasxAsesor, CardsAdmin },
   data () {
     return {
-
+      cantidad: 0
     };
   },
   methods:{

@@ -14,12 +14,16 @@ export default {
         this.labels = res.data.meses
         this.cantidad = res.data.cantidad
         this.setGraph()
+        let c = this.cantidad.slice(-1)
+        this.$emit('VentaxMes', c[0])
       })
     } else{
       this.$http.post('/api/Venta/VendidoporLocal', {local: this.$auth.getToken().userId}).then(res => {
         this.labels = res.data.meses
         this.cantidad = res.data.cantidad
         this.setGraph()
+        let c = this.cantidad.slice(-1)
+        this.$emit('VentaxMes', c[0])
       })
     }
   },
